@@ -1,0 +1,7 @@
+# respaldos locales
+*.bak
+*.tmp
+
+# sistema
+Thumbs.db
+.DS_Store

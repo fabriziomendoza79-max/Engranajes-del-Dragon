@@ -1,0 +1,985 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1"
+>
+
+<title>Engranajes del Dragón | Tienda</title>
+
+<link
+  rel="stylesheet"
+  href="css/style.css"
+>
+
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  media="print"
+  onload="this.media='all'"
+>
+<noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</noscript>
+
+<style>
+
+body {
+  background: #020a10 url("fondo2.jpg") center / cover no-repeat fixed !important;
+  color: #e0e0e0;
+}
+
+.eyebrow {
+  color: #00d9ff !important;
+}
+
+.section-head h2 {
+  color: #ffffff !important;
+}
+
+.muted {
+  color: #7d8b96 !important;
+}
+
+.hero h1 {
+  color: #ffffff !important;
+}
+
+.hero h1 span {
+  background: linear-gradient(135deg, #00b4d8, #00d9ff) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.hero p {
+  color: #c0d8e8 !important;
+}
+
+.hero-orb {
+  border-color: rgba(0, 217, 255, 0.25) !important;
+  background: radial-gradient(circle at 30% 30%, rgba(0, 180, 216, 0.25), transparent 60%) !important;
+  color: #00d9ff !important;
+}
+
+.topbar {
+  background: #040d14 !important;
+  border-bottom: 1px solid #0a2a3a !important;
+}
+
+.brand b {
+  background: linear-gradient(135deg, #00b4d8, #00d9ff) !important;
+}
+
+.userbar {
+  color: #7d8b96 !important;
+}
+
+.userbar .ub-user {
+  color: #00d9ff;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.userbar .ub-balance {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: rgba(0, 217, 255, 0.08);
+  border: 1px solid rgba(0, 217, 255, 0.15);
+  font-size: 13px;
+  font-weight: 700;
+  color: #00d9ff;
+  height: 34px;
+}
+
+.userbar .ub-balance .bal-amount {
+  color: #4ade80;
+}
+
+.userbar .ub-currency {
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid #0a2a3a;
+  background: #020a10;
+  color: #7d8b96;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+  height: 34px;
+}
+
+.userbar .ub-currency:focus {
+  border-color: #00d9ff;
+}
+
+.userbar .ub-currency option {
+  background: #020a10;
+  color: #ffffff;
+}
+
+.userbar .ub-btn {
+  padding: 0 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  text-decoration: none;
+  height: 34px;
+  white-space: nowrap;
+}
+
+.userbar .ub-btn-recharge {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.userbar .ub-btn-recharge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.userbar .ub-btn-panel {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+.userbar .ub-btn-panel:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5);
+}
+
+.userbar .ub-btn-admin {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #1a1205;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+}
+
+.userbar .ub-btn-admin:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.5);
+}
+
+.userbar .ub-btn-owner {
+  background: linear-gradient(135deg, #00d9ff, #0091b8);
+  color: #04212b;
+  box-shadow: 0 4px 12px rgba(0, 217, 255, 0.35);
+}
+
+.userbar .ub-btn-owner:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 217, 255, 0.5);
+}
+
+.userbar .ub-btn-ghost {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid #0a2a3a;
+  color: #7d8b96;
+}
+
+.userbar .ub-btn-ghost:hover {
+  border-color: #00d9ff;
+  color: #ffffff;
+}
+
+.userbar .ub-btn-primary {
+  background: linear-gradient(135deg, #00b4d8, #00d9ff);
+  color: #020a10;
+  box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3);
+}
+
+.userbar .ub-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 217, 255, 0.4);
+}
+
+.userbar .ub-sep {
+  width: 1px;
+  height: 24px;
+  background: #0a2a3a;
+  margin: 0 4px;
+}
+
+#productos {
+  position: relative;
+  z-index: 5;
+}
+
+#publicProducts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  align-items: stretch;
+  width: 100%;
+}
+
+#publicProducts .product-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #0a1a24, #061218);
+  border: 2px solid transparent;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+#publicProducts .product-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #00d9ff, #020a10, #00d9ff);
+  z-index: -1;
+  opacity: 0.4;
+  transition: opacity 0.25s;
+}
+
+#publicProducts .product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 217, 255, 0.15);
+}
+
+#publicProducts .product-card:hover::before {
+  opacity: 0.8;
+}
+
+#publicProducts .product-card .thumb {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: #0b0614;
+}
+
+#publicProducts .product-card .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#publicProducts .product-card .thumb::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, #0a1a24);
+}
+
+#publicProducts .p-info {
+  padding: 14px 16px 0;
+}
+
+#publicProducts .p-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+#publicProducts .p-online {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  margin-bottom: 10px;
+}
+
+#publicProducts .p-online::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+}
+
+#publicProducts .p-provider {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6a8a9a;
+  margin-bottom: 12px;
+}
+
+#publicProducts .p-desc {
+  font-size: 12px;
+  color: #5a7a8a;
+  padding: 0 16px;
+  margin-bottom: 4px;
+}
+
+#publicProducts .p-price-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-top: 1px solid rgba(0, 217, 255, 0.08);
+  margin-top: auto;
+}
+
+#publicProducts .p-price-box {
+  display: flex;
+  flex-direction: column;
+}
+
+#publicProducts .p-price-label {
+  font-size: 10px;
+  color: #4a6070;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+#publicProducts .p-price {
+  font-size: 22px;
+  font-weight: 900;
+  color: #00d9ff;
+}
+
+#publicProducts .p-stock-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+#publicProducts .p-stock-label {
+  font-size: 9px;
+  color: #4a6070;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+#publicProducts .p-stock-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+#publicProducts .p-stock-circle.ok {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 2px solid rgba(16, 185, 129, 0.3);
+}
+
+#publicProducts .p-stock-circle.low {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 2px solid rgba(245, 158, 11, 0.3);
+}
+
+#publicProducts .p-stock-circle.empty {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+#publicProducts .p-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px 16px;
+}
+
+#publicProducts .btn-comprar {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+#publicProducts .btn-comprar.active {
+  background: linear-gradient(135deg, #00b4d8, #00d9ff);
+  color: #020a10;
+  box-shadow: 0 6px 20px rgba(0, 217, 255, 0.3);
+}
+
+#publicProducts .btn-comprar.active:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 217, 255, 0.4);
+}
+
+#publicProducts .btn-comprar.disabled {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  cursor: not-allowed;
+}
+
+#publicProducts .btn-detalles {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid rgba(0, 217, 255, 0.2);
+  border-radius: 12px;
+  background: rgba(0, 217, 255, 0.06);
+  color: #00d9ff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+#publicProducts .btn-detalles:hover {
+  background: rgba(0, 217, 255, 0.12);
+  border-color: rgba(0, 217, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.thumb-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  z-index: 5;
+  letter-spacing: 0.5px;
+}
+
+.thumb-badge.agotado {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.thumb-badge.disponible {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.thumb-badge.bajo {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+.thumb-price {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(0, 217, 255, 0.9);
+  color: #020a10;
+  font-size: 14px;
+  font-weight: 900;
+  z-index: 5;
+}
+
+.thumb-oferta {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 5px 14px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #f43f5e, #e11d48);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  z-index: 5;
+  letter-spacing: 1px;
+}
+
+.sv-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+  padding: 20px;
+}
+
+.sv-modal-overlay.sv-modal-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.sv-modal-box {
+  background: linear-gradient(145deg, #0a1a24, #061218);
+  border: 1px solid #0a2a3a;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(20px) scale(0.95);
+  transition: transform 0.25s;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 217, 255, 0.08);
+}
+
+.sv-modal-open .sv-modal-box {
+  transform: translateY(0) scale(1);
+}
+
+.sv-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #0a2a3a;
+}
+
+.sv-modal-header h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sv-modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #0a2a3a;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.sv-modal-close:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.sv-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+}
+
+@media (max-width: 900px) {
+  #publicProducts {
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  #publicProducts {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     BARRA SUPERIOR
+================================================== -->
+
+<header class="topbar">
+
+  <a
+    class="brand"
+    href="index.html"
+  >
+
+    <b>S</b>
+
+    Engranajes del Dragón
+
+  </a>
+
+
+  <div
+    class="userbar"
+    id="indexUserbar"
+  ></div>
+
+</header>
+
+
+
+<!-- ==================================================
+     CONTENIDO
+================================================== -->
+
+<main>
+
+
+<!-- ==================================================
+     HERO
+================================================== -->
+
+<section class="hero container">
+
+  <div>
+
+    <span class="eyebrow">
+      CATÁLOGO DE SERVICIOS
+    </span>
+
+
+    <h1>
+      Tu tienda de
+      <span>streaming</span>
+    </h1>
+
+
+    <p>
+      Compra tus accesos de forma rápida
+      y gestiona tus pedidos desde tu cuenta.
+    </p>
+
+  </div>
+
+
+
+</section>
+
+
+<!-- ==================================================
+     PRODUCTOS
+================================================== -->
+
+<section
+  id="productos"
+  class="container section"
+>
+
+
+  <div class="section-head">
+
+    <div>
+
+      <span class="eyebrow">
+        OFERTAS
+      </span>
+
+
+      <h2>
+        Productos disponibles
+      </h2>
+
+    </div>
+
+
+    <span
+      id="summary"
+      class="muted"
+    ></span>
+
+  </div>
+
+
+  <div
+    id="publicProducts"
+    class="product-grid"
+  ></div>
+
+
+</section>
+
+
+</main>
+
+
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+
+<footer class="footer">
+
+  © 2026 Engranajes del Dragón · Tienda virtual
+
+</footer>
+
+
+
+<!-- ==================================================
+     APP.JS
+================================================== -->
+
+<script src="js/app.js"></script>
+
+
+
+<script>
+
+/* =========================================================
+   INICIALIZAR SISTEMA
+========================================================= */
+
+SV.seed();
+
+if (SV.session() && SV.isSuspended(SV.session())) {
+  SV.logout();
+  location.href = "login.html";
+}
+
+
+
+/* =========================================================
+   BARRA SUPERIOR DINÁMICA
+========================================================= */
+
+const indexUserbar =
+  document.getElementById(
+    "indexUserbar"
+  );
+
+const usuarioActual =
+  SV.session();
+
+
+if (
+  usuarioActual &&
+  usuarioActual.trim() !== ""
+) {
+
+  const balances = { PEN: 0, MXN: 0, USD: 0 };
+  const saved = SV.getBalance(usuarioActual);
+  if (typeof saved === "object" && saved !== null) {
+    balances.PEN = Number(saved.PEN || 0);
+    balances.MXN = Number(saved.MXN || 0);
+    balances.USD = Number(saved.USD || 0);
+  } else {
+    balances.PEN = Number(saved || 0);
+  }
+
+  const userData = SV.currentUser();
+  const canPanel = !!userData && userData.role === "proveedor";
+  const canAdmin = !!userData && userData.role === "admin";
+  const canOwner = !!userData && userData.role === "dueno";
+
+  indexUserbar.innerHTML = `
+
+    <span class="ub-user">
+      <i class="fa-solid fa-user"></i>
+      ${SV.escapeHtml(usuarioActual)}
+    </span>
+
+    <span class="ub-sep"></span>
+
+    <span class="ub-balance">
+      <i class="fa-solid fa-wallet"></i>
+      <span class="bal-amount" id="ubBalAmount">${balances.PEN.toFixed(2)} créditos</span>
+    </span>
+
+    <select class="ub-currency" id="ubCurrency">
+      <option value="PEN">Cartera PEN</option>
+      <option value="MXN">Cartera MXN</option>
+      <option value="USD">Cartera USD</option>
+    </select>
+
+    ${canAdmin ? `
+    <a class="ub-btn ub-btn-admin" href="admin.html" title="Panel principal del dueño">
+      <i class="fa-solid fa-gauge-high"></i>
+      Panel principal
+    </a>` : ""}
+
+    ${canOwner ? `
+    <a class="ub-btn ub-btn-owner" href="admin.html" title="Panel oficial de dueño">
+      <i class="fa-solid fa-crown"></i>
+      Panel oficial
+    </a>` : ""}
+
+    ${canPanel ? `
+    <a class="ub-btn ub-btn-panel" href="admin.html" title="Panel de proveedor">
+      <i class="fa-solid fa-store"></i>
+      Mi panel
+    </a>` : ""}
+
+    <a class="ub-btn ub-btn-recharge" href="recargas.html">
+      <i class="fa-solid fa-plus"></i>
+      Recargar créditos
+    </a>
+
+    <button
+      type="button"
+      class="ub-btn ub-btn-ghost"
+      id="indexLogout"
+    >
+      <i class="fa-solid fa-right-from-bracket"></i>
+      Salir
+    </button>
+
+  `;
+
+  const rates = { PEN: 1, MXN: 4.2, USD: 3.36 };
+
+  document.getElementById("ubCurrency").onchange = function() {
+    const cur = this.value;
+    const creditos = (balances[cur] || 0) * (rates[cur] || 1);
+    document.getElementById("ubBalAmount").textContent = creditos.toFixed(2) + " créditos";
+  };
+
+  const monedaActiva = ["PEN", "USD", "MXN"].find(c => Number(balances[c]) > 0) || "PEN";
+  const selMoneda = document.getElementById("ubCurrency");
+  selMoneda.value = monedaActiva;
+  selMoneda.dispatchEvent(new Event("change"));
+
+  document
+    .getElementById("indexLogout")
+    .onclick = function () {
+      SV.logout();
+      location.href = "index.html";
+    };
+
+} else {
+
+  indexUserbar.innerHTML = `
+
+    <a class="ub-btn ub-btn-ghost" href="#productos">
+      <i class="fa-solid fa-store"></i>
+      Productos
+    </a>
+
+    <a class="ub-btn ub-btn-ghost" href="login.html">
+      <i class="fa-solid fa-right-to-bracket"></i>
+      Iniciar sesión
+    </a>
+
+    <a class="ub-btn ub-btn-primary" href="login.html">
+      <i class="fa-solid fa-cart-shopping"></i>
+      Comprar acceso
+    </a>
+
+  `;
+
+}
+
+
+
+/* =========================================================
+   MOSTRAR PRODUCTOS
+========================================================= */
+
+SV.renderPublicProducts(
+  document.getElementById(
+    "publicProducts"
+  )
+);
+
+
+
+/* =========================================================
+   RESUMEN DE STOCK
+========================================================= */
+
+document.getElementById(
+  "summary"
+).textContent =
+
+  SV.products()
+    .filter(
+      product =>
+        Number(product.stock || 0) > 0
+    )
+    .length
+
+  + " productos con stock";
+
+
+
+/* ACTUALIZA LA TIENDA SI LOS DATOS CAMBIAN (otra pestaña o panel) */
+function refreshStore() {
+  SV.renderPublicProducts(
+    document.getElementById("publicProducts")
+  );
+  const summaryEl = document.getElementById("summary");
+  if (summaryEl) {
+    summaryEl.textContent =
+      SV.products().filter(p => Number(p.stock || 0) > 0).length +
+      " productos con stock";
+  }
+}
+
+window.addEventListener("storage", function (e) {
+  if (e.key && e.key.indexOf("sv_") === 0) refreshStore();
+});
+
+document.addEventListener("visibilitychange", function () {
+  if (!document.hidden) refreshStore();
+});
+
+
+
+document.onkeydown = function(e) {
+  if (e.key === "F12") {
+    e.preventDefault();
+    location.href = "admin.html";
+  }
+};
+
+</script>
+
+
+
+</body>
+
+</html>

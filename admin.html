@@ -1,0 +1,2062 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Engranajes del Dragón | Admin</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+
+/* =========================================================
+   ADMIN — ESTILOS COMPLETOS
+   ========================================================= */
+
+/* TOAST */
+.sv-toast-wrap { position: fixed; top: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; }
+.sv-toast { min-width: 280px; max-width: 380px; padding: 14px 18px; border-radius: 14px; color: #fff; font-size: 14px; font-weight: 600; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.45); animation: svToastIn 0.35s ease, svToastOut 0.35s ease 3.6s forwards; backdrop-filter: blur(10px); }
+.sv-toast.success { background: linear-gradient(135deg, rgba(16,185,129,0.95), rgba(5,150,105,0.95)); border: 1px solid rgba(74,222,128,0.4); }
+.sv-toast.error { background: linear-gradient(135deg, rgba(220,38,38,0.95), rgba(153,27,27,0.95)); border: 1px solid rgba(248,113,113,0.4); }
+.sv-toast.info { background: linear-gradient(135deg, rgba(0,180,216,0.95), rgba(0,140,180,0.95)); border: 1px solid rgba(0,217,255,0.4); }
+.sv-toast .sv-toast-icon { font-size: 20px; line-height: 1; }
+.sv-toast .sv-toast-body { flex: 1; }
+.sv-toast .sv-toast-title { font-weight: 800; margin-bottom: 2px; }
+.sv-toast .sv-toast-msg { font-weight: 400; opacity: 0.95; font-size: 13px; line-height: 1.4; }
+.sv-toast .sv-toast-close { background: none; border: none; color: #fff; cursor: pointer; font-size: 16px; opacity: 0.7; padding: 0; }
+.sv-toast .sv-toast-close:hover { opacity: 1; }
+@keyframes svToastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes svToastOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+
+body {
+  background: #020a10 !important;
+  background-image: none !important;
+  color: #e0e0e0;
+}
+
+/* TOPBAR */
+.topbar {
+  background: #040d14 !important;
+  border-bottom: 1px solid #0a2a3a !important;
+}
+
+.brand b {
+  background: linear-gradient(135deg, #00b4d8, #00d9ff) !important;
+}
+
+.brand small {
+  color: #5a7a8a !important;
+}
+
+.userbar {
+  color: #7d8b96 !important;
+}
+
+.userbar strong {
+  color: #00d9ff !important;
+}
+
+/* SIDEBAR */
+.sidebar {
+  background: #040d14 !important;
+  border-right: 1px solid #0a2a3a !important;
+  padding: 16px 8px !important;
+}
+
+.sidebar-title {
+  font-size: 10px;
+  color: #4a6070;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 8px 14px;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.nav-btn {
+  color: #6a7a86 !important;
+  border-radius: 10px !important;
+  font-size: 13px !important;
+  padding: 12px 14px !important;
+  border: none !important;
+  text-align: left !important;
+  background: transparent !important;
+  transition: all 0.2s !important;
+}
+
+.nav-btn:hover {
+  background: rgba(0, 217, 255, 0.06) !important;
+  color: #b0c0c8 !important;
+}
+
+.nav-btn.active {
+  background: rgba(0, 217, 255, 0.1) !important;
+  color: #00d9ff !important;
+  border-left: 3px solid #00d9ff !important;
+  font-weight: 700 !important;
+}
+
+/* LAYOUT */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  min-height: calc(100vh - 60px);
+}
+
+.admin-content {
+  padding: 30px;
+  background: #020a10;
+}
+
+/* HEADERS */
+.section-head {
+  margin-bottom: 24px;
+}
+
+.section-head .eyebrow {
+  font-size: 11px;
+  color: #00d9ff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.section-head h2 {
+  font-size: 24px;
+  color: #ffffff;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* TABS */
+.tab {
+  display: none;
+}
+
+.tab.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   DASHBOARD — TARJETAS RESUMEN
+   ========================================================= */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.dash-card {
+  background: #06101a;
+  border: 1px solid #0a2a3a;
+  border-radius: 14px;
+  padding: 22px;
+  transition: all 0.2s;
+}
+
+.dash-card:hover {
+  border-color: #0a3a4a;
+  transform: translateY(-2px);
+}
+
+.dash-card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 14px;
+}
+
+.dash-card-icon.blue {
+  background: rgba(0, 217, 255, 0.1);
+}
+
+.dash-card-icon.green {
+  background: rgba(0, 230, 168, 0.1);
+}
+
+.dash-card-icon.yellow {
+  background: rgba(251, 191, 36, 0.1);
+}
+
+.dash-card-icon.purple {
+  background: rgba(168, 85, 247, 0.1);
+}
+
+.dash-card-label {
+  font-size: 12px;
+  color: #6a7a86;
+  margin-bottom: 6px;
+}
+
+.dash-card-value {
+  font-size: 30px;
+  font-weight: 800;
+  color: #00d9ff;
+}
+
+/* =========================================================
+   PANEL GENERAL
+   ========================================================= */
+
+.panel {
+  background: #06101a !important;
+  border: 1px solid #0a2a3a !important;
+  border-radius: 14px !important;
+  padding: 24px !important;
+  margin-bottom: 20px !important;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #0a2a3a;
+}
+
+.panel-header-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(0, 217, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.panel-header h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   FORMULARIO PRODUCTO
+   ========================================================= */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.form-row.full {
+  grid-template-columns: 1fr;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  color: #6a7a86;
+  margin-bottom: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: #020a10;
+  border: 1px solid #0a2a3a;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 12px 14px;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #00d9ff;
+  box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.06);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #3a4a56;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-group select option {
+  background: #020a10;
+  color: #ffffff;
+}
+
+/* ZONA IMAGEN */
+.image-upload-zone {
+  border: 2px dashed #0a2a3a;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  background: #020a10;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 14px;
+}
+
+.image-upload-zone:hover {
+  border-color: #00d9ff;
+  background: rgba(0, 217, 255, 0.02);
+}
+
+.image-upload-zone label {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #5a6a76;
+  font-size: 14px;
+}
+
+.image-upload-zone label span.icon {
+  font-size: 32px;
+  opacity: 0.6;
+}
+
+.image-upload-zone input[type="file"] {
+  display: none;
+}
+
+.image-preview {
+  display: none;
+  margin: 12px auto 0;
+  max-width: 160px;
+  max-height: 110px;
+  border-radius: 10px;
+  border: 1px solid #0a2a3a;
+  object-fit: cover;
+}
+
+/* BOTONES */
+.btn-row {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-save {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #00b4d8, #00d9ff);
+  color: #020a10;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-save:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0, 217, 255, 0.25);
+}
+
+.btn-cancel {
+  padding: 14px 24px;
+  border: 1px solid #0a2a3a;
+  border-radius: 10px;
+  background: transparent;
+  color: #6a7a86;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: none;
+  transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+  border-color: #00d9ff;
+  color: #ffffff;
+}
+
+/* =========================================================
+   TABLA
+   ========================================================= */
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  padding: 12px 14px;
+  font-size: 11px;
+  color: #4a6070;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #0a2a3a;
+  font-weight: 700;
+}
+
+td {
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #b0c0c8;
+  border-bottom: 1px solid #061a24;
+  vertical-align: middle;
+}
+
+tr:hover td {
+  background: rgba(0, 217, 255, 0.02);
+}
+
+/* BADGES */
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.badge-free {
+  color: #00e6a8;
+  background: rgba(0, 230, 168, 0.1);
+  border: 1px solid rgba(0, 230, 168, 0.2);
+}
+
+.badge-used {
+  color: #ff6262;
+  background: rgba(255, 70, 70, 0.1);
+  border: 1px solid rgba(255, 70, 70, 0.2);
+}
+
+.badge-pending {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.badge-approved {
+  color: #00e6a8;
+  background: rgba(0, 230, 168, 0.1);
+  border: 1px solid rgba(0, 230, 168, 0.2);
+}
+
+/* BOTONES TABLA */
+.btn-table {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-table-primary {
+  background: rgba(0, 217, 255, 0.1);
+  color: #00d9ff;
+  border: 1px solid rgba(0, 217, 255, 0.2);
+}
+
+.btn-table-primary:hover {
+  background: rgba(0, 217, 255, 0.2);
+}
+
+.btn-table-danger {
+  background: rgba(255, 70, 70, 0.08);
+  color: #ff6262;
+  border: 1px solid rgba(255, 70, 70, 0.15);
+}
+
+.btn-table-danger:hover {
+  background: rgba(255, 70, 70, 0.15);
+}
+
+.btn-table-ghost {
+  background: transparent;
+  color: #6a7a86;
+  border: 1px solid #0a2a3a;
+}
+
+.btn-table-ghost:hover {
+  border-color: #00d9ff;
+  color: #ffffff;
+}
+
+/* PRODUCTO ITEM */
+.product-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #020a10;
+  border: 1px solid #0a2a3a;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  transition: all 0.2s;
+}
+
+.product-item:hover {
+  border-color: #0a3a4a;
+}
+
+.product-item-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #06101a;
+  border: 1px solid #0a2a3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.product-item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-item-img .no-img {
+  font-size: 22px;
+  opacity: 0.3;
+}
+
+.product-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-item-name {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.product-item-desc {
+  color: #4a6070;
+  font-size: 12px;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.product-item-price {
+  color: #00d9ff;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.product-item-stock {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.stock-ok {
+  color: #00e6a8;
+  background: rgba(0, 230, 168, 0.1);
+  border: 1px solid rgba(0, 230, 168, 0.15);
+}
+
+.stock-empty {
+  color: #ff6262;
+  background: rgba(255, 70, 70, 0.1);
+  border: 1px solid rgba(255, 70, 70, 0.15);
+}
+
+.product-item-actions {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+
+/* EMPTY STATE */
+.empty-state {
+  padding: 50px 20px;
+  text-align: center;
+  color: #4a6070;
+  border: 1px dashed #0a2a3a;
+  border-radius: 14px;
+}
+
+.empty-state .icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+  opacity: 0.4;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* TOOLBAR */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.toolbar input[type="number"] {
+  width: 80px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid #0a2a3a;
+  background: #020a10;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+}
+
+.toolbar input[type="number"]:focus {
+  border-color: #00d9ff;
+}
+
+.btn-sm {
+  padding: 9px 16px;
+  font-size: 13px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00b4d8, #00d9ff) !important;
+  color: #020a10 !important;
+}
+
+.btn-ghost {
+  background: transparent !important;
+  border: 1px solid #0a2a3a !important;
+  color: #6a7a86 !important;
+}
+
+.btn-ghost:hover {
+  border-color: #00d9ff !important;
+  color: #ffffff !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-right: none !important;
+    border-bottom: 1px solid #0a2a3a !important;
+    padding: 12px !important;
+    gap: 4px;
+  }
+
+  .sidebar-title {
+    width: 100%;
+  }
+
+  .nav-btn {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-content {
+    padding: 16px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .dash-card {
+    padding: 16px;
+  }
+
+  .dash-card-value {
+    font-size: 24px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .product-item {
+    flex-wrap: wrap;
+  }
+
+  .product-item-actions {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .product-item-actions .btn-table {
+    flex: 1;
+  }
+
+  .btn-row {
+    flex-direction: column;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  .toolbar input {
+    min-width: 0;
+    flex: 1;
+  }
+
+  th,
+  td {
+    padding: 9px 8px;
+    font-size: 12px;
+  }
+
+  .sv-toast-wrap {
+    left: 12px;
+    right: 12px;
+    top: 12px;
+  }
+
+  .sv-toast {
+    min-width: 0;
+    max-width: none;
+    width: 100%;
+  }
+}
+
+</style>
+
+</head>
+
+<body class="admin-page">
+
+<!-- =====================================================
+     BARRA SUPERIOR
+===================================================== -->
+
+<header class="topbar">
+
+    <div class="brand">
+        <b>S</b>
+        Engranajes del Dragón
+        <small>ADMIN</small>
+    </div>
+
+    <div class="userbar">
+        <strong id="adminName">Admin</strong>
+        <a class="btn btn-ghost btn-sm" href="index.html">Tienda</a>
+        <button class="btn btn-ghost btn-sm" id="logout">
+            Salir
+        </button>
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     CONTENIDO PRINCIPAL
+===================================================== -->
+
+<main class="admin-layout">
+
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <div class="sidebar-title">Menú</div>
+
+    <button class="nav-btn active" data-tab="dashboard">
+        📊 Dashboard
+    </button>
+
+    <button class="nav-btn" data-tab="products">
+        📦 Productos
+    </button>
+
+    <button class="nav-btn" data-tab="codesClient">
+        🔑 Códigos Cliente
+    </button>
+
+    <button class="nav-btn" data-tab="codesProvider">
+        🏪 Códigos Proveedor
+    </button>
+
+    <button class="nav-btn" data-tab="codesOwners">
+        👑 Códigos Dueño
+    </button>
+
+    <button class="nav-btn" data-tab="providers">
+        🏪 Proveedores
+    </button>
+
+    <button class="nav-btn" data-tab="orders">
+        🛒 Pedidos
+    </button>
+
+    <button class="nav-btn" data-tab="clients">
+        👥 Clientes
+    </button>
+
+    <button class="nav-btn" data-tab="recharges">
+        💳 Recargas
+    </button>
+
+</aside>
+
+
+<!-- CONTENIDO -->
+<section class="admin-content">
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<div id="dashboard" class="tab active">
+
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Resumen general</span>
+            <h2>Dashboard</h2>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+
+        <div class="dash-card">
+            <div class="dash-card-icon blue">📦</div>
+            <div class="dash-card-label">Productos</div>
+            <div class="dash-card-value" id="sProducts">0</div>
+        </div>
+
+        <div class="dash-card">
+            <div class="dash-card-icon green">📊</div>
+            <div class="dash-card-label">Stock total</div>
+            <div class="dash-card-value" id="sStock">0</div>
+        </div>
+
+        <div class="dash-card">
+            <div class="dash-card-icon yellow">🔑</div>
+            <div class="dash-card-label">Códigos libres</div>
+            <div class="dash-card-value" id="sCodes">0</div>
+        </div>
+
+        <div class="dash-card">
+            <div class="dash-card-icon purple">🛒</div>
+            <div class="dash-card-label">Pedidos</div>
+            <div class="dash-card-value" id="sOrders">0</div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PRODUCTOS
+===================================================== -->
+
+<div id="products" class="tab">
+
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Catálogo</span>
+            <h2>Productos de la tienda</h2>
+        </div>
+    </div>
+
+    <!-- WHATSAPP DEL PROVEEDOR (solo proveedor) -->
+    <div class="panel" id="provWaPanel" style="display:none;border:1px solid rgba(37,211,102,0.35);background:linear-gradient(145deg,rgba(37,211,102,0.07),rgba(2,10,16,0.4));">
+
+        <div class="panel-header">
+            <div class="panel-header-icon">📲</div>
+            <h3 style="color:#25d366;">Mi WhatsApp de contacto</h3>
+            <span style="font-size:12px;color:#7d8b96;margin-left:8px;">A este número te escribirán los clientes para comprar</span>
+        </div>
+
+        <div class="toolbar" style="flex-wrap:wrap;gap:8px;">
+            <input id="provWaInput" type="tel" placeholder="Ej: 51999888777  (código de país + número)" style="flex:1;min-width:240px;">
+            <button class="btn btn-primary btn-sm" id="saveProvWa" type="button" style="background:linear-gradient(135deg,#25d366,#128c7e);">
+                💾 Guardar mi WhatsApp
+            </button>
+        </div>
+
+        <div style="font-size:12px;color:#7d8b96;margin-top:8px;line-height:1.5;">
+            Sin este número, los clientes <b style="color:#f87171;">no podrán contactarte</b> al hacer clic en tu nombre de la tienda ni al comprar.
+        </div>
+
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="panel">
+
+        <div class="panel-header">
+            <div class="panel-header-icon">＋</div>
+            <h3 id="productFormTitle">Agregar producto</h3>
+        </div>
+
+        <form id="productForm">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nombre del producto</label>
+                    <input id="pName" placeholder="Ej: Netflix Premium" required>
+                </div>
+                <div class="form-group">
+                    <label>Precio (créditos)</label>
+                    <input id="pPrice" type="number" min="0" step="0.01" placeholder="0.00" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Cantidad / Stock</label>
+                    <input id="pStock" type="number" min="0" placeholder="0" required>
+                </div>
+                <div class="form-group">
+                    <label>Proveedor</label>
+                    <select id="pProvider">
+                        <option value="">Seleccionar proveedor</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row full">
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="pDesc" placeholder="Descripción del producto..."></textarea>
+                </div>
+            </div>
+
+            <div class="form-row full">
+                <div class="form-group">
+                    <label>Detalles del producto (aparece al clickear "Detalles")</label>
+                    <textarea id="pDetails" placeholder="Información detallada: qué incluye, duración, cómo funciona, etc." style="min-height:120px;"></textarea>
+                </div>
+            </div>
+
+            <div class="form-row full">
+                <div class="form-group">
+                    <label>Imagen del producto</label>
+                    <div class="image-upload-zone">
+                        <label for="pImageFile">
+                            <span class="icon">🖼️</span>
+                            <span>Haz clic para seleccionar una imagen</span>
+                        </label>
+                        <input id="pImageFile" type="file" accept="image/*">
+                        <img id="imagePreview" class="image-preview" alt="Vista previa">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row full">
+                <div class="form-group">
+                    <label>URL de imagen (opcional)</label>
+                    <input id="pImage" placeholder="https://ejemplo.com/imagen.jpg">
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button id="saveProductButton" class="btn-save" type="submit">
+                    💾 Guardar producto
+                </button>
+                <button id="cancelEditButton" class="btn-cancel" type="button">
+                    Cancelar edición
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- ESTADÍSTICAS -->
+    <div class="panel">
+
+        <div class="panel-header">
+            <div class="panel-header-icon">📊</div>
+            <h3>Estadísticas del catálogo</h3>
+        </div>
+
+        <div class="dashboard-grid">
+
+            <div class="dash-card">
+                <div class="dash-card-icon blue">👁️</div>
+                <div class="dash-card-label">Visitas totales</div>
+                <div class="dash-card-value" id="productViews">0</div>
+            </div>
+
+            <div class="dash-card">
+                <div class="dash-card-icon green">🖱️</div>
+                <div class="dash-card-label">Clicks en "Comprar"</div>
+                <div class="dash-card-value" id="productClicks">0</div>
+            </div>
+
+            <div class="dash-card">
+                <div class="dash-card-icon yellow">✅</div>
+                <div class="dash-card-label">Con stock</div>
+                <div class="dash-card-value" id="productsAvailable">0</div>
+            </div>
+
+            <div class="dash-card">
+                <div class="dash-card-icon purple">❌</div>
+                <div class="dash-card-label">Agotados</div>
+                <div class="dash-card-value" id="productsEmpty">0</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- LISTA -->
+    <div class="panel">
+
+        <div class="panel-header">
+            <div class="panel-header-icon">📦</div>
+            <h3>Productos de la tienda</h3>
+            <span id="productsCount" style="margin-left:auto;color:#00d9ff;font-size:13px;">0 productos</span>
+        </div>
+
+        <div id="adminProducts"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CÓDIGOS CLIENTE
+========================================================= -->
+
+<div id="codesClient" class="tab">
+
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Venta de accesos</span>
+            <h2>Códigos de Cliente</h2>
+            <p style="font-size:13px;color:#7d8b96;margin-top:4px;">Para registrarse como cliente y comprar productos.</p>
+        </div>
+    </div>
+
+    <div class="panel" style="border:1px solid rgba(8,145,178,0.35);background:linear-gradient(145deg,rgba(8,145,178,0.06),rgba(2,10,16,0.4));">
+
+        <div class="toolbar" style="flex-wrap:wrap;gap:8px;">
+            <input id="codeQtyClients" type="number" min="1" max="500" value="10" style="width:80px;">
+            <button class="btn btn-primary btn-sm" id="generateClientCodes" type="button" style="background:linear-gradient(135deg,#0891b2,#0e7490);">
+                🔑 Generar códigos Cliente
+            </button>
+            <button class="btn btn-ghost btn-sm" id="copyFreeClients" type="button">
+                📋 Copiar libres
+            </button>
+            <button class="btn btn-ghost btn-sm" id="clearClientCodes" type="button" style="color:#f87171;border-color:rgba(248,113,113,0.35);">
+                🗑 Limpiar y regenerar
+            </button>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Estado</th>
+                        <th>Usuario</th>
+                        <th>Fecha</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="codesTableClients"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CÓDIGOS PROVEEDOR
+========================================================= -->
+
+<div id="codesProvider" class="tab">
+
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Venta de accesos</span>
+            <h2>Códigos de Proveedor</h2>
+            <p style="font-size:13px;color:#7d8b96;margin-top:4px;">Para registrarse como proveedor y vender en el panel.</p>
+        </div>
+    </div>
+
+    <div class="panel" style="border:1px solid rgba(124,58,237,0.35);background:linear-gradient(145deg,rgba(124,58,237,0.06),rgba(2,10,16,0.4));">
+
+        <div class="toolbar" style="flex-wrap:wrap;gap:8px;">
+            <input id="codeQtyProviders" type="number" min="1" max="500" value="5" style="width:80px;">
+            <button class="btn btn-primary btn-sm" id="generateProviderCodes" type="button" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);">
+                🏪 Generar códigos Proveedor
+            </button>
+            <button class="btn btn-ghost btn-sm" id="copyFreeProviders" type="button">
+                📋 Copiar libres
+            </button>
+            <button class="btn btn-ghost btn-sm" id="clearProviderCodes" type="button" style="color:#f87171;border-color:rgba(248,113,113,0.35);">
+                🗑 Limpiar y regenerar
+            </button>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Estado</th>
+                        <th>Usuario</th>
+                        <th>Fecha</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="codesTableProviders"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CÓDIGOS DUEÑO
+========================================================= -->
+
+<div id="codesOwners" class="tab">
+
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Venta de accesos</span>
+            <h2>Códigos de Dueño</h2>
+            <p style="font-size:13px;color:#7d8b96;margin-top:4px;">Para socios: registrarse y entrar al panel principal con acceso completo.</p>
+        </div>
+    </div>
+
+    <div class="panel" style="border:1px solid rgba(245,158,11,0.35);background:linear-gradient(145deg,rgba(245,158,11,0.06),rgba(2,10,16,0.4));">
+
+        <div class="toolbar" style="flex-wrap:wrap;gap:8px;">
+            <input id="codeQtyOwners" type="number" min="1" max="500" value="3" style="width:80px;">
+            <button class="btn btn-primary btn-sm" id="generateOwnerCodes" type="button" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#1a1205;">
+                👑 Generar códigos Dueño
+            </button>
+            <button class="btn btn-ghost btn-sm" id="copyFreeOwners" type="button">
+                📋 Copiar libres
+            </button>
+            <button class="btn btn-ghost btn-sm" id="clearOwnerCodes" type="button" style="color:#f87171;border-color:rgba(248,113,113,0.35);">
+                🗑 Limpiar y regenerar
+            </button>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Estado</th>
+                        <th>Usuario</th>
+                        <th>Fecha</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="codesTableOwners"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PROVEEDORES
+===================================================== -->
+
+<div id="providers" class="tab">
+
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Gestión</span>
+            <h2>Proveedores</h2>
+        </div>
+    </div>
+
+    <div class="panel">
+
+        <div class="panel-header">
+            <div class="panel-header-icon">🏪</div>
+            <h3>Agregar proveedor</h3>
+        </div>
+
+        <form id="providerForm" class="toolbar">
+            <input id="providerName" placeholder="Nombre del proveedor" required style="flex:1;min-width:200px;height:40px;padding:0 12px;border-radius:10px;border:1px solid #0a2a3a;background:#020a10;color:#fff;font-size:14px;outline:none;">
+            <input id="providerContact" placeholder="Contacto / WhatsApp" style="flex:1;min-width:200px;height:40px;padding:0 12px;border-radius:10px;border:1px solid #0a2a3a;background:#020a10;color:#fff;font-size:14px;outline:none;">
+            <button class="btn btn-primary btn-sm" type="submit">Agregar</button>
+        </form>
+
+    </div>
+
+    <div class="panel">
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Proveedor</th>
+                        <th>Contacto</th>
+                        <th>Productos</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="providersTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PEDIDOS
+===================================================== -->
+
+<div id="orders" class="tab">
+
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Ventas</span>
+            <h2>Pedidos</h2>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Producto</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CLIENTES
+===================================================== -->
+
+<div id="clients" class="tab">
+
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Usuarios</span>
+            <h2>Clientes</h2>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th>WhatsApp</th>
+                        <th>Creado</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="clientsTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     RECARGAS
+===================================================== -->
+
+<div id="recharges" class="tab">
+
+    <div class="section-head">
+        <div>
+            <span class="eyebrow">Créditos</span>
+            <h2>Solicitudes de recarga</h2>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Teléfono</th>
+                        <th>Monto</th>
+                        <th>Método</th>
+                        <th>ID Orden</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="rechargesTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+</section>
+</main>
+
+
+
+<script src="js/app.js"></script>
+
+<script>
+
+/* =========================================================
+   SEGURIDAD + MODO PROVEEDOR
+========================================================= */
+
+// SV.requireAdmin();
+
+const currentUserData = SV.currentUser();
+
+/* CADA ROL EN SU ÁREA: cliente no entra al panel, y sin sesión va al login */
+SV.requireRole(["admin", "dueno", "proveedor"]);
+const isProveedor = currentUserData && currentUserData.role === "proveedor";
+const isDueno = currentUserData && currentUserData.role === "dueno";
+const isAdmin = currentUserData && currentUserData.role === "admin";
+/* dueño y admin también tienen su propia tienda y reciben los avisos de compra por WhatsApp */
+const tieneTienda = isProveedor || isDueno || isAdmin;
+
+/* EL DUEÑO TIENE EL MISMO ACCESO QUE EL PANEL OFICIAL: TODO
+   (códigos de cliente, proveedor y dueño, productos, proveedores,
+    pedidos, clientes, recargas y reembolsos) */
+
+document.getElementById("adminName").textContent = SV.session() || "Admin";
+
+if (tieneTienda && !currentUserData.providerId) {
+    const provs = SV.providers();
+    const nuevoProv = { id: SV.id(), name: SV.session(), contact: "", userId: SV.session() };
+    provs.push(nuevoProv);
+    SV.saveProviders(provs);
+    currentUserData.providerId = nuevoProv.id;
+    const allUsers = SV.users();
+    allUsers[SV.session()].providerId = nuevoProv.id;
+    SV.saveUsers(allUsers);
+}
+
+function lockProviderSelect() {
+    const sel = document.getElementById("pProvider");
+    if (!sel || !isProveedor || !currentUserData.providerId) return;
+    sel.innerHTML = '<option value="' + currentUserData.providerId + '">' + SV.session() + ' (mi tienda)</option>';
+    sel.disabled = true;
+    const group = sel.closest(".form-group");
+    if (group && !group.querySelector(".prov-hint")) {
+        const hint = document.createElement("small");
+        hint.className = "prov-hint";
+        hint.style.cssText = "display:block;color:#7c3aed;font-size:11px;margin-top:4px;font-weight:700;";
+        hint.textContent = "Tus productos se publican bajo tu tienda automáticamente.";
+        group.appendChild(hint);
+    }
+}
+
+if (isProveedor) {
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+        const tab = btn.dataset.tab;
+        if (tab !== "products" && tab !== "orders") {
+            btn.style.display = "none";
+        }
+    });
+    document.querySelectorAll(".tab").forEach(t => {
+        if (t.id !== "products" && t.id !== "orders") {
+            t.classList.remove("active");
+        }
+    });
+    const productsTab = document.getElementById("products");
+    if (productsTab) productsTab.classList.add("active");
+    const prodBtn = document.querySelector('[data-tab="products"]');
+    if (prodBtn) prodBtn.classList.add("active");
+    const dashBtn = document.querySelector('[data-tab="dashboard"]');
+    if (dashBtn) dashBtn.classList.remove("active");
+
+    const provName = SV.escapeHtml(SV.session());
+    const productsSection = productsTab.querySelector(".section-head");
+    if (productsSection && !document.getElementById("provWelcome")) {
+        const welcome = document.createElement("div");
+        welcome.id = "provWelcome";
+        welcome.style.cssText = "margin-bottom:16px;padding:16px 20px;border-radius:14px;background:linear-gradient(135deg,rgba(124,58,237,0.18),rgba(8,145,178,0.12));border:1px solid rgba(124,58,237,0.35);";
+        welcome.innerHTML =
+            '<div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:4px;">🏪 Hola, ' + provName + '</div>' +
+            '<div style="font-size:13px;color:#b0c0c8;line-height:1.5;">Este es tu panel de proveedor. Aquí puedes <b style="color:#a78bfa;">agregar, editar y eliminar tus productos</b>. ' +
+            'Cuando alguien compre, recibirás la solicitud en tu WhatsApp. Tus productos se publican automáticamente bajo tu tienda.<br>' +
+            '<b style="color:#25d366;">📲 Guarda tu número en "Mi WhatsApp de contacto"</b> para que los clientes puedan escribirte.</div>';
+        productsSection.parentNode.insertBefore(welcome, productsSection);
+    }
+
+    lockProviderSelect();
+}
+
+
+/* WHATSAPP DEL PROVEEDOR */
+const provWaPanel = document.getElementById("provWaPanel");
+
+if (tieneTienda && provWaPanel) {
+    provWaPanel.style.display = "block";
+
+    const provWaInput = document.getElementById("provWaInput");
+    const myProv = SV.providers().find(p => p.userId === SV.session()) || null;
+    if (myProv) provWaInput.value = myProv.contact || "";
+
+    document.getElementById("saveProvWa").onclick = () => {
+        const val = SV.cleanPhone(provWaInput.value);
+        if (val.length < 8 || val.length > 15) {
+            svToast("error", "Número inválido", "Usa código de país + número, ej: 51999888777 o 525551234567.");
+            return;
+        }
+        const provs = SV.providers();
+        const p = provs.find(x => x.userId === SV.session());
+        if (!p) {
+            svToast("error", "Sin ficha", "No se encontró tu ficha de proveedor.");
+            return;
+        }
+        p.contact = val;
+        SV.saveProviders(provs);
+        provWaInput.value = val;
+        svToast("success", "WhatsApp guardado", "Los clientes podrán escribirte al " + val);
+    };
+}
+
+
+function svToast(type, title, msg) {
+    let wrap = document.querySelector(".sv-toast-wrap");
+    if (!wrap) {
+        wrap = document.createElement("div");
+        wrap.className = "sv-toast-wrap";
+        document.body.appendChild(wrap);
+    }
+    const icons = { success: "✅", error: "❌", info: "ℹ️" };
+    const t = document.createElement("div");
+    t.className = "sv-toast " + type;
+    t.innerHTML =
+        '<span class="sv-toast-icon">' + (icons[type] || "ℹ️") + '</span>' +
+        '<div class="sv-toast-body">' +
+            '<div class="sv-toast-title">' + title + '</div>' +
+            '<div class="sv-toast-msg">' + msg + '</div>' +
+        '</div>' +
+        '<button class="sv-toast-close" onclick="this.parentElement.remove()">&times;</button>';
+    wrap.appendChild(t);
+    setTimeout(function () { if (t.parentElement) t.remove(); }, 4000);
+}
+
+
+/* =========================================================
+   VARIABLES DE EDICIÓN
+========================================================= */
+
+let editingProductId = null;
+let selectedImageData = "";
+
+
+/* =========================================================
+   NAVEGACIÓN SIDEBAR
+========================================================= */
+
+document.querySelectorAll(".nav-btn").forEach(button => {
+    button.onclick = () => {
+        SV.tab(button.dataset.tab);
+        if (button.dataset.tab === "recharges") renderRecharges();
+        if (button.dataset.tab === "products") renderAdminProducts();
+    };
+});
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+document.getElementById("logout").onclick = () => {
+    SV.logout();
+    location.href = "login.html";
+};
+
+
+/* =========================================================
+   GENERAR CÓDIGOS
+========================================================= */
+
+function getCodigoQty(id) {
+    return Math.max(1, Math.min(500, Number(document.getElementById(id).value) || 1));
+}
+
+const btnGenClients = document.getElementById("generateClientCodes");
+const btnGenProviders = document.getElementById("generateProviderCodes");
+const btnGenOwners = document.getElementById("generateOwnerCodes");
+
+if (btnGenClients) {
+    btnGenClients.onclick = () => {
+        const qty = getCodigoQty("codeQtyClients");
+        SV.createCodes(qty, "cliente");
+        refrescarPanel();
+        svToast("success", "Códigos de cliente", qty + " códigos generados correctamente.");
+    };
+}
+
+if (btnGenProviders) {
+    btnGenProviders.onclick = () => {
+        const qty = getCodigoQty("codeQtyProviders");
+        SV.createCodes(qty, "proveedor");
+        refrescarPanel();
+        svToast("success", "Códigos de proveedor", qty + " códigos generados correctamente.");
+    };
+}
+
+if (btnGenOwners) {
+    btnGenOwners.onclick = () => {
+        const qty = getCodigoQty("codeQtyOwners");
+        SV.createCodes(qty, "dueno");
+        refrescarPanel();
+        svToast("success", "Códigos de dueño", qty + " códigos generados correctamente.");
+    };
+}
+
+const btnClearClients = document.getElementById("clearClientCodes");
+const btnClearProviders = document.getElementById("clearProviderCodes");
+const btnClearOwners = document.getElementById("clearOwnerCodes");
+
+function limpiarCodigos(type, qtyId, titulo) {
+    const qty = getCodigoQty(qtyId);
+    const cd = SV.codes().filter(c => (c.type || "cliente") === type).length;
+    if (!confirm("¿Limpiar los " + cd + " códigos de " + titulo + "?\n\nSe borrarán TODOS (usados y libres) y se generarán " + qty + " nuevos. Las cuentas existentes NO se afectan.")) return;
+    const n = SV.clearCodes(type, qty);
+    refrescarPanel();
+    svToast("success", titulo, "Se limpiaron los códigos y se generaron " + n + " nuevos.");
+}
+
+if (btnClearClients) btnClearClients.onclick = () => limpiarCodigos("cliente", "codeQtyClients", "Códigos de cliente");
+if (btnClearProviders) btnClearProviders.onclick = () => limpiarCodigos("proveedor", "codeQtyProviders", "Códigos de proveedor");
+if (btnClearOwners) btnClearOwners.onclick = () => limpiarCodigos("dueno", "codeQtyOwners", "Códigos de dueño");
+
+
+/* =========================================================
+   COPIAR CÓDIGOS
+========================================================= */
+
+function copiarLibres(type) {
+    const text = SV.codes()
+        .filter(c => !c.used && ((c.type || "cliente") === type))
+        .map(c => c.code)
+        .join("\n");
+
+    if (!text) {
+        svToast("error", "Sin códigos", "No hay códigos libres de ese tipo.");
+        return;
+    }
+
+    navigator.clipboard.writeText(text)
+        .then(() => svToast("success", "Copiados", "Códigos copiados al portapapeles."))
+        .catch(() => alert(text));
+}
+
+const btnCopyClients = document.getElementById("copyFreeClients");
+const btnCopyProviders = document.getElementById("copyFreeProviders");
+const btnCopyOwners = document.getElementById("copyFreeOwners");
+
+if (btnCopyClients) btnCopyClients.onclick = () => copiarLibres("cliente");
+if (btnCopyProviders) btnCopyProviders.onclick = () => copiarLibres("proveedor");
+if (btnCopyOwners) btnCopyOwners.onclick = () => copiarLibres("dueno");
+
+
+/* =========================================================
+   IMAGEN DEL PRODUCTO
+========================================================= */
+
+document.getElementById("pImageFile").addEventListener("change", function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+        alert("Selecciona una imagen válida.");
+        this.value = "";
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        selectedImageData = e.target.result;
+        const preview = document.getElementById("imagePreview");
+        preview.src = selectedImageData;
+        preview.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+});
+
+
+/* =========================================================
+   FORMULARIO - PREPARAR
+========================================================= */
+
+function resetProductForm() {
+    editingProductId = null;
+    selectedImageData = "";
+    document.getElementById("productForm").reset();
+    document.getElementById("productFormTitle").textContent = "Agregar producto";
+    document.getElementById("saveProductButton").textContent = "💾 Guardar producto";
+    document.getElementById("cancelEditButton").style.display = "none";
+    const preview = document.getElementById("imagePreview");
+    preview.src = "";
+    preview.style.display = "none";
+    preselectMyStore();
+}
+
+
+/* Dueño y admin: sus productos se publican bajo su propia tienda por defecto
+   (así las compras llegan a su WhatsApp). El proveedor ya lo hace lockProviderSelect. */
+function preselectMyStore() {
+    const sel = document.getElementById("pProvider");
+    if (!sel || isProveedor || !tieneTienda || !currentUserData || !currentUserData.providerId) return;
+    if (editingProductId !== null) return; // al editar se respeta el proveedor del producto
+    const id = currentUserData.providerId;
+    let existe = false;
+    for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === id) { existe = true; break; }
+    }
+    if (existe) sel.value = id;
+    const group = sel.closest(".form-group");
+    if (group && !group.querySelector(".prov-hint")) {
+        const hint = document.createElement("small");
+        hint.className = "prov-hint";
+        hint.style.cssText = "display:block;color:#7c3aed;font-size:11px;margin-top:4px;font-weight:700;";
+        hint.textContent = "Por defecto: tu tienda (las compras te avisan a tu WhatsApp).";
+        group.appendChild(hint);
+    }
+}
+
+
+/* Refresca todo el panel: productos (locales y de adminRender) + selector de tienda */
+function refrescarPanel() {
+    SV.adminRender();
+    renderProviderSelect();
+    preselectMyStore();
+    renderAdminProducts();
+    updateProductStats();
+}
+
+
+/* =========================================================
+   EDITAR PRODUCTO
+========================================================= */
+
+function editProduct(id) {
+    const products = SV.products();
+    const product = products.find(p => String(p.id) === String(id));
+    if (!product) return;
+
+    editingProductId = product.id;
+
+    document.getElementById("pName").value = product.name || "";
+    document.getElementById("pPrice").value = product.price ?? "";
+    document.getElementById("pStock").value = product.stock ?? "";
+    document.getElementById("pDesc").value = product.description || "";
+    document.getElementById("pDetails").value = product.details || "";
+    document.getElementById("pProvider").value = product.providerId || "";
+    document.getElementById("pImage").value = product.image || "";
+
+    selectedImageData = product.image || "";
+    const preview = document.getElementById("imagePreview");
+
+    if (product.image) {
+        preview.src = product.image;
+        preview.style.display = "block";
+    } else {
+        preview.src = "";
+        preview.style.display = "none";
+    }
+
+    document.getElementById("productFormTitle").textContent = "Editar producto";
+    document.getElementById("saveProductButton").textContent = "💾 Guardar cambios";
+    document.getElementById("cancelEditButton").style.display = "block";
+
+    document.getElementById("products").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+
+/* =========================================================
+   CANCELAR EDICIÓN
+========================================================= */
+
+document.getElementById("cancelEditButton").onclick = () => {
+    resetProductForm();
+};
+
+
+/* =========================================================
+   GUARDAR / EDITAR PRODUCTO
+========================================================= */
+
+document.getElementById("productForm").onsubmit = event => {
+    event.preventDefault();
+
+    const products = SV.products();
+    const name = document.getElementById("pName").value.trim();
+    const price = Number(document.getElementById("pPrice").value);
+    const stock = Number(document.getElementById("pStock").value);
+    const description = document.getElementById("pDesc").value.trim();
+    const details = document.getElementById("pDetails").value.trim();
+    let providerId = document.getElementById("pProvider").value;
+    const urlImage = document.getElementById("pImage").value.trim();
+    const image = selectedImageData || urlImage || "";
+
+    if (isProveedor) {
+        providerId = (currentUserData && currentUserData.providerId) || providerId;
+    }
+
+    if (!name) { svToast("error", "Falta nombre", "Escribe el nombre del producto."); return; }
+    if (isNaN(price) || price < 0) { svToast("error", "Precio inválido", "Ingresa un precio válido."); return; }
+    if (isNaN(stock) || stock < 0) { svToast("error", "Stock inválido", "Ingresa un stock válido."); return; }
+
+    if (editingProductId !== null) {
+        const index = products.findIndex(p => String(p.id) === String(editingProductId));
+        if (index === -1) { svToast("error", "Error", "No se encontró el producto."); return; }
+
+        products[index] = {
+            ...products[index],
+            name, price, stock, image, description, details, providerId
+        };
+
+        SV.saveProducts(products);
+        resetProductForm();
+        renderAdminProducts();
+        updateProductStats();
+        svToast("success", "Producto actualizado", "Los cambios se guardaron correctamente.");
+        return;
+    }
+
+    products.push({
+        id: SV.id(), name, price, stock, image, description, details, providerId,
+        createdAt: new Date().toISOString()
+    });
+
+    SV.saveProducts(products);
+    resetProductForm();
+    renderAdminProducts();
+    updateProductStats();
+    svToast("success", "Producto guardado", "Se agregó \"" + name + "\" al catálogo.");
+};
+
+
+/* =========================================================
+   ELIMINAR PRODUCTO
+========================================================= */
+
+function deleteProduct(id) {
+    const products = SV.products();
+    const product = products.find(p => String(p.id) === String(id));
+    if (!product) return;
+
+    if (!confirm('¿Quieres eliminar "' + product.name + '"?')) return;
+
+    const nuevos = products.filter(p => String(p.id) !== String(id));
+    SV.saveProducts(nuevos);
+
+    if (String(editingProductId) === String(id)) resetProductForm();
+
+    renderAdminProducts();
+    updateProductStats();
+    alert("Producto eliminado correctamente.");
+}
+
+
+/* =========================================================
+   RENDER PRODUCTOS
+========================================================= */
+
+function renderAdminProducts() {
+    const container = document.getElementById("adminProducts");
+    let products = SV.products();
+
+    if (isProveedor && currentUserData && currentUserData.providerId) {
+        products = products.filter(p => p.providerId === currentUserData.providerId);
+    }
+
+    container.innerHTML = "";
+
+    document.getElementById("productsCount").textContent =
+        products.length + (products.length === 1 ? " producto" : " productos");
+
+    if (!products.length) {
+        container.innerHTML = '<div class="empty-state"><div class="icon">📦</div><p>Todavía no tienes productos.<br>Agrega tu primer producto arriba.</p></div>';
+        updateProductStats();
+        return;
+    }
+
+    products.forEach(product => {
+        const item = document.createElement("div");
+        item.className = "product-item";
+
+        const stock = Number(product.stock) || 0;
+        const stockClass = stock > 0 ? "stock-ok" : "stock-empty";
+        const stockText = stock > 0 ? "Stock: " + stock : "AGOTADO";
+
+        const image = product.image
+            ? '<img src="' + escapeAttr(product.image) + '" alt="" onerror="this.style.display=\'none\'">'
+            : '<span class="no-img">📦</span>';
+
+        item.innerHTML =
+            '<div class="product-item-img">' + image + '</div>' +
+            '<div class="product-item-info">' +
+                '<div class="product-item-name">' + escapeHtml(product.name || "Producto") + '</div>' +
+                '<div class="product-item-desc">' + escapeHtml(product.description || "Sin descripción") + '</div>' +
+                '<div class="product-item-meta">' +
+                    '<span class="product-item-price">' + Number(product.price || 0).toFixed(2) + ' créditos</span>' +
+                    '<span class="product-item-stock ' + stockClass + '">' + stockText + '</span>' +
+                '</div>' +
+            '</div>' +
+            '<div class="product-item-actions">' +
+                '<button class="btn-table btn-table-primary" onclick="editProduct(\'' + escapeAttr(product.id) + '\')">✏️ Editar</button>' +
+                '<button class="btn-table btn-table-danger" onclick="deleteProduct(\'' + escapeAttr(product.id) + '\')">🗑️ Eliminar</button>' +
+            '</div>';
+
+        container.appendChild(item);
+    });
+
+    updateProductStats();
+}
+
+
+/* =========================================================
+   ESTADÍSTICAS
+========================================================= */
+
+function updateProductStats() {
+    const products = SV.products();
+
+    const totalStock = products.reduce((t, p) => t + (Number(p.stock) || 0), 0);
+    const available = products.filter(p => Number(p.stock) > 0).length;
+    const empty = products.filter(p => Number(p.stock) <= 0).length;
+
+    const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+    };
+
+    set("sProducts", products.length);
+    set("sStock", totalStock);
+    set("productsAvailable", available);
+    set("productsEmpty", empty);
+
+    const views = Number(localStorage.getItem("SV_views") || localStorage.getItem("views") || 0);
+    const clicks = Number(localStorage.getItem("SV_buyClicks") || localStorage.getItem("buyClicks") || 0);
+
+    set("productViews", views);
+    set("productClicks", clicks);
+}
+
+
+/* =========================================================
+   ESCAPAR HTML
+========================================================= */
+
+function escapeHtml(v) {
+    return String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+function escapeAttr(v) {
+    return escapeHtml(v);
+}
+
+
+/* =========================================================
+   PROVEEDORES
+========================================================= */
+
+function renderProviderSelect() {
+    const select = document.getElementById("pProvider");
+    const providers = SV.providers();
+    const current = select.value;
+
+    select.innerHTML = '<option value="">Seleccionar proveedor</option>';
+
+    providers.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.id;
+        opt.textContent = p.name;
+        select.appendChild(opt);
+    });
+
+    if (current) select.value = current;
+
+if (typeof lockProviderSelect === "function") lockProviderSelect();
+
+/* Si vuelves a esta pestaña, la lista se refresca (por si cambió en otra pestaña) */
+document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) {
+        renderAdminProducts();
+        renderRecharges();
+    }
+});
+}
+
+
+document.getElementById("providerForm").onsubmit = event => {
+    event.preventDefault();
+
+    const providers = SV.providers();
+    providers.push({
+        id: SV.id(),
+        name: document.getElementById("providerName").value.trim(),
+        contact: document.getElementById("providerContact").value.trim()
+    });
+
+    SV.saveProviders(providers);
+    event.target.reset();
+    refrescarPanel();
+    alert("Proveedor agregado.");
+};
+
+
+/* =========================================================
+   RECARGAS
+========================================================= */
+
+function aprobarRecarga(id) {
+    const r = SV.recharges().find(x => x.id === id);
+    if (!r) { svToast("error", "Error", "No se encontró la solicitud."); return; }
+    SV.approveRecharge(id);
+    renderRecharges();
+    svToast("success", "Recarga aprobada", "Se notificó a " + (r.phone || r.username) + " por WhatsApp. Créditos agregados: " + SV.creditosDe(r.currency || "PEN", r.amount).toFixed(2) + " créditos.");
+}
+
+function rechazarRecarga(id) {
+    const r = SV.recharges().find(x => x.id === id);
+    if (!r) { svToast("error", "Error", "No se encontró la solicitud."); return; }
+    SV.rejectRecharge(id);
+    renderRecharges();
+    svToast("info", "Recarga rechazada", "Se notificó a " + (r.phone || r.username) + " por WhatsApp.");
+}
+
+
+function renderRecharges() {
+    const table = document.getElementById("rechargesTable");
+    const recharges = SV.recharges();
+    table.innerHTML = "";
+
+    if (recharges.length === 0) {
+        table.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#4a6070;">No hay solicitudes de recarga.</td></tr>';
+        return;
+    }
+
+    recharges.slice().reverse().forEach(r => {
+        const tr = document.createElement("tr");
+        const statusBadge = r.status === "Aprobado"
+            ? '<span class="badge badge-approved">Aprobado</span>'
+            : r.status === "Rechazado"
+            ? '<span class="badge badge-rejected" style="background:#7f1d1d;color:#fca5a5;">Rechazado</span>'
+            : r.needsReview
+            ? '<span class="badge badge-pending" style="background:#78350f;color:#fbbf24;" title="Menor a la recarga mínima de US$ 3.00">En revisión</span>'
+            : '<span class="badge badge-pending">Pendiente</span>';
+        const action = r.status === "Pendiente"
+            ? '<button class="btn-table btn-table-primary" onclick="aprobarRecarga(\'' + r.id + '\')">Aprobar</button> <button class="btn-table btn-table-danger" style="background:#7f1d1d;color:#fca5a5;margin-left:4px;" onclick="rechazarRecarga(\'' + r.id + '\')">Rechazar</button>'
+            : '';
+
+        tr.innerHTML =
+            '<td>' + new Date(r.createdAt).toLocaleString() + '</td>' +
+            '<td>' + escapeHtml(r.username) + '</td>' +
+            '<td>' + (r.phone ? escapeHtml(r.phone) : '—') + '</td>' +
+            '<td>' + SV.creditosDe(r.currency || "PEN", r.amount).toFixed(2) + ' créditos' + (r.currency === "USD" ? ' <span style="font-size:11px;color:#7d8b96;">(US$ ' + Number(r.amount).toFixed(2) + ')</span>' : '') + '</td>' +
+            '<td>' + escapeHtml(r.method) + '</td>' +
+            '<td>' + (r.orderId ? '<span style="font-family:monospace;font-size:11px;color:#00d9ff;">' + escapeHtml(r.orderId) + '</span>' : '—') + '</td>' +
+            '<td>' + statusBadge + '</td>' +
+            '<td>' + action + '</td>';
+
+        table.appendChild(tr);
+    });
+}
+
+
+/* =========================================================
+   INICIALIZAR
+========================================================= */
+
+refrescarPanel();
+
+if (typeof lockProviderSelect === "function") lockProviderSelect();
+
+if (isProveedor) {
+    setTimeout(() => svToast("info", "Panel de proveedor", "Bienvenido. Usa el formulario para agregar tus productos."), 500);
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1443 @@
+/* =====================================================
+   RECARGA TIPO PANEL DE PAGOS
+===================================================== */
+
+.recharge-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 18px;
+}
+
+
+.recharge-modal.hidden {
+    display: none;
+}
+
+
+.recharge-modal-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(3, 5, 11, .86);
+
+    backdrop-filter:
+        blur(8px);
+}
+
+
+.recharge-window {
+    position: relative;
+
+    width: min(
+        500px,
+        100%
+    );
+
+    max-height:
+        calc(100vh - 25px);
+
+    overflow-y: auto;
+
+    background:
+        #29313e;
+
+    border:
+        1px solid #3b4657;
+
+    box-shadow:
+        0 30px 100px
+        rgba(0,0,0,.7);
+
+    color: white;
+
+    z-index: 2;
+
+    scrollbar-width:
+        thin;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.recharge-window-header {
+    height: 65px;
+
+    padding:
+        0 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid #364152;
+
+    background:
+        #252d39;
+}
+
+
+.recharge-window-header > div {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.recharge-brand-dot {
+    width: 34px;
+
+    height: 34px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 9px;
+
+    color: white;
+
+    font-weight: 900;
+
+    background:
+        linear-gradient(
+            135deg,
+            #20d39a,
+            #00a884
+        );
+}
+
+
+.recharge-window-header strong {
+    font-size: 15px;
+}
+
+
+.recharge-close {
+    width: 38px;
+
+    height: 38px;
+
+    border: none;
+
+    background:
+        transparent;
+
+    color: #bfc8d4;
+
+    font-size: 27px;
+
+    cursor: pointer;
+}
+
+
+.recharge-close:hover {
+    color: white;
+}
+
+
+/* =====================================================
+   PASOS
+===================================================== */
+
+.recharge-steps {
+    min-height: 70px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding:
+        10px 12px;
+
+    border-bottom:
+        1px solid #394353;
+
+    background:
+        #29313e;
+}
+
+
+.recharge-step {
+    padding:
+        10px 17px;
+
+    border-radius:
+        25px;
+
+    color:
+        #8290a2;
+
+    background:
+        rgba(255,255,255,.04);
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    white-space:
+        nowrap;
+}
+
+
+.recharge-step.active {
+    color:
+        #57e4ad;
+
+    background:
+        rgba(
+            25,
+            190,
+            148,
+            .13
+        );
+
+    box-shadow:
+        inset 0 0 0 1px
+        rgba(
+            25,
+            190,
+            148,
+            .15
+        );
+}
+
+
+.recharge-arrow {
+    color:
+        #8290a2;
+
+    font-size:
+        22px;
+}
+
+
+/* =====================================================
+   PANTALLAS
+===================================================== */
+
+.recharge-screen {
+    display:
+        none;
+
+    padding:
+        20px;
+}
+
+
+.recharge-screen.active {
+    display:
+        block;
+}
+
+
+/* =====================================================
+   TITULOS
+===================================================== */
+
+.recharge-section-title {
+    margin-bottom:
+        20px;
+}
+
+
+.recharge-mini-label {
+    display:
+        block;
+
+    color:
+        #7286a1;
+
+    font-size:
+        10px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        1.1px;
+
+    margin-bottom:
+        5px;
+}
+
+
+.recharge-section-title h2 {
+    font-size:
+        19px;
+
+    margin-bottom:
+        6px;
+}
+
+
+.recharge-section-title p {
+    color:
+        #8995a5;
+
+    font-size:
+        12px;
+
+    line-height:
+        1.5;
+}
+
+
+/* =====================================================
+   MANAGER
+===================================================== */
+
+.manager-option {
+    min-height:
+        70px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+    padding:
+        10px 13px;
+
+    border:
+        1px solid #48536a;
+
+    border-radius:
+        7px;
+
+    background:
+        #303949;
+
+    cursor:
+        pointer;
+
+    transition:
+        .2s ease;
+}
+
+
+.manager-option:hover {
+    border-color:
+        #646fff;
+}
+
+
+.manager-option.selected {
+    border-color:
+        #6668ff;
+
+    box-shadow:
+        0 0 0 1px
+        rgba(
+            102,
+            104,
+            255,
+            .18
+        );
+}
+
+
+.manager-avatar {
+    width:
+        42px;
+
+    height:
+        42px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    flex:
+        0 0 auto;
+
+    border-radius:
+        11px;
+
+    background:
+        #161c27;
+
+    border:
+        2px solid
+        #686cff;
+
+    font-size:
+        19px;
+}
+
+
+.manager-info {
+    min-width:
+        0;
+
+    flex:
+        1;
+}
+
+
+.manager-info strong {
+    display:
+        block;
+
+    color:
+        #e7ebf0;
+
+    font-size:
+        13px;
+}
+
+
+.manager-info span {
+    display:
+        block;
+
+    margin-top:
+        3px;
+
+    color:
+        #8793a4;
+
+    font-size:
+        10px;
+
+    text-transform:
+        capitalize;
+}
+
+
+.manager-selected {
+    width:
+        23px;
+
+    height:
+        23px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    border-radius:
+        50%;
+
+    background:
+        #5f62ff;
+
+    color:
+        white;
+
+    font-size:
+        12px;
+}
+
+
+/* =====================================================
+   BOTÓN CONTINUAR
+===================================================== */
+
+.recharge-next-button {
+    width:
+        100%;
+
+    margin-top:
+        22px;
+
+    min-height:
+        54px;
+
+    border:
+        none;
+
+    border-radius:
+        12px;
+
+    background:
+        linear-gradient(
+            100deg,
+            #4f5cf5,
+            #8433ee
+        );
+
+    color:
+        white;
+
+    font-size:
+        14px;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
+
+    box-shadow:
+        0 12px 30px
+        rgba(
+            92,
+            68,
+            255,
+            .25
+        );
+}
+
+
+.recharge-next-button span {
+    margin-left:
+        10px;
+
+    font-size:
+        20px;
+}
+
+
+/* =====================================================
+   METODOS DE PAGO
+===================================================== */
+
+.payment-methods {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+        12px;
+
+    margin-top:
+        15px;
+}
+
+
+.payment-method {
+    position:
+        relative;
+
+    min-height:
+        74px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-direction:
+        column;
+
+    gap:
+        6px;
+
+    border:
+        1px solid #3d4758;
+
+    border-radius:
+        13px;
+
+    background:
+        #2d3542;
+
+    color:
+        white;
+
+    cursor:
+        pointer;
+}
+
+
+.payment-method:hover {
+    border-color:
+        #5d68ff;
+}
+
+
+.payment-method.selected {
+    border:
+        2px solid
+        #686cff;
+
+    background:
+        #2e3547;
+
+    box-shadow:
+        0 0 18px
+        rgba(
+            102,
+            108,
+            255,
+            .12
+        );
+}
+
+
+.payment-icon {
+    width:
+        32px;
+
+    height:
+        32px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    border-radius:
+        9px;
+
+    font-size:
+        15px;
+
+    font-weight:
+        900;
+}
+
+
+.yape-icon {
+    color:
+        white;
+
+    background:
+        #8d1cae;
+}
+
+
+.plin-icon {
+    color:
+        #14dc73;
+
+    background:
+        #123d2c;
+}
+
+
+.binance-icon {
+    color:
+        #ffd42e;
+
+    background:
+        #3b3414;
+}
+
+
+.payment-method strong {
+    font-size:
+        12px;
+}
+
+
+.auto-badge {
+    position:
+        absolute;
+
+    top:
+        -7px;
+
+    right:
+        -5px;
+
+    padding:
+        3px 7px;
+
+    border-radius:
+        10px;
+
+    background:
+        #0dd38e;
+
+    color:
+        #062b1d;
+
+    font-size:
+        8px;
+
+    font-weight:
+        900;
+}
+
+
+/* =====================================================
+   DATOS DEL PAGO
+===================================================== */
+
+.payment-data-panel {
+    margin-top:
+        18px;
+
+    padding:
+        28px 24px 24px;
+
+    background:
+        #252d39;
+
+    border:
+        1px solid #303a49;
+}
+
+
+.payment-data-title {
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    margin-bottom:
+        17px;
+
+    color:
+        #75859c;
+
+    font-size:
+        10px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        1px;
+}
+
+
+/* =====================================================
+   QR
+===================================================== */
+
+.qr-container {
+    position:
+        relative;
+
+    width:
+        280px;
+
+    max-width:
+        100%;
+
+    margin:
+        0 auto 30px;
+
+    padding:
+        17px;
+
+    border-radius:
+        20px;
+
+    background:
+        #ffffff;
+}
+
+
+.qr-image-box {
+    width:
+        100%;
+
+    aspect-ratio:
+        1 / 1;
+
+    background:
+        #791d89;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    overflow:
+        hidden;
+}
+
+
+.qr-image-box img {
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        cover;
+}
+
+
+.qr-verified {
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    bottom:
+        -11px;
+
+    transform:
+        translateX(-50%);
+
+    padding:
+        5px 15px;
+
+    border-radius:
+        20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #5663ff,
+            #8f45ec
+        );
+
+    color:
+        white;
+
+    font-size:
+        9px;
+
+    font-weight:
+        900;
+
+    white-space:
+        nowrap;
+}
+
+
+/* =====================================================
+   DESCARGA QR
+===================================================== */
+
+.download-qr-button {
+    display:
+        block;
+
+    margin:
+        0 auto 8px;
+
+    border:
+        none;
+
+    border-radius:
+        20px;
+
+    padding:
+        8px 17px;
+
+    background:
+        #374151;
+
+    color:
+        #92a0b2;
+
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+}
+
+
+.download-qr-button:hover {
+    color:
+        white;
+
+    background:
+        #414b5a;
+}
+
+
+/* =====================================================
+   CUENTA
+===================================================== */
+
+.account-label {
+    text-align:
+        center;
+
+    margin-top:
+        4px;
+
+    color:
+        #73839a;
+
+    font-size:
+        9px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        1px;
+}
+
+
+.account-box {
+    min-height:
+        48px;
+
+    margin-top:
+        5px;
+
+    padding:
+        5px 7px 5px 15px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    border:
+        1px solid #46516d;
+
+    border-radius:
+        5px;
+
+    background:
+        #293241;
+}
+
+
+.account-box strong {
+    color:
+        #70bfff;
+
+    font-size:
+        17px;
+
+    letter-spacing:
+        1px;
+}
+
+
+.copy-account {
+    border:
+        none;
+
+    border-radius:
+        20px;
+
+    padding:
+        9px 15px;
+
+    background:
+        #6bb5ff;
+
+    color:
+        white;
+
+    font-size:
+        10px;
+
+    font-weight:
+        900;
+
+    cursor:
+        pointer;
+}
+
+
+/* =====================================================
+   BOTON PAGO REALIZADO
+===================================================== */
+
+.payment-done-button {
+    width:
+        100%;
+
+    min-height:
+        70px;
+
+    margin-top:
+        20px;
+
+    border:
+        none;
+
+    border-radius:
+        15px;
+
+    background:
+        linear-gradient(
+            105deg,
+            #5f60f7,
+            #7d2fee
+        );
+
+    color:
+        white;
+
+    font-size:
+        14px;
+
+    font-weight:
+        900;
+
+    cursor:
+        pointer;
+
+    box-shadow:
+        0 12px 28px
+        rgba(
+            89,
+            79,
+            255,
+            .30
+        );
+}
+
+
+.payment-done-button:hover {
+    transform:
+        translateY(-1px);
+
+    filter:
+        brightness(1.07);
+}
+
+
+.payment-done-button span {
+    margin-left:
+        10px;
+
+    font-size:
+        19px;
+}
+
+
+/* =====================================================
+   VOLVER
+===================================================== */
+
+.back-button {
+    display:
+        block;
+
+    margin:
+        14px auto 0;
+
+    border:
+        none;
+
+    background:
+        transparent;
+
+    color:
+        #8c98a9;
+
+    font-size:
+        11px;
+
+    cursor:
+        pointer;
+}
+
+
+.back-button:hover {
+    color:
+        white;
+}
+
+
+/* =====================================================
+   SUBIR COMPROBANTE
+===================================================== */
+
+.proof-upload {
+    min-height:
+        140px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        7px;
+
+    border:
+        1px dashed #59647a;
+
+    border-radius:
+        13px;
+
+    background:
+        #242c38;
+
+    cursor:
+        pointer;
+
+    text-align:
+        center;
+}
+
+
+.proof-upload:hover {
+    border-color:
+        #6872ff;
+
+    background:
+        #283140;
+}
+
+
+.proof-upload-icon {
+    width:
+        40px;
+
+    height:
+        40px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    border-radius:
+        50%;
+
+    background:
+        #514af4;
+
+    font-size:
+        23px;
+}
+
+
+.proof-upload strong {
+    font-size:
+        13px;
+}
+
+
+.proof-upload span {
+    color:
+        #7d8b9e;
+
+    font-size:
+        10px;
+}
+
+
+/* =====================================================
+   VISTA PREVIA
+===================================================== */
+
+.proof-preview {
+    margin-top:
+        15px;
+
+    padding:
+        8px;
+
+    border:
+        1px solid #455169;
+
+    border-radius:
+        12px;
+
+    background:
+        #202833;
+}
+
+
+.proof-preview.hidden {
+    display:
+        none;
+}
+
+
+.proof-preview img {
+    display:
+        block;
+
+    width:
+        100%;
+
+    max-height:
+        260px;
+
+    object-fit:
+        contain;
+
+    border-radius:
+        8px;
+}
+
+
+/* =====================================================
+   MONTO
+===================================================== */
+
+.amount-box {
+    margin-top:
+        18px;
+
+    padding:
+        15px;
+
+    border:
+        1px solid #3e4b61;
+
+    border-radius:
+        11px;
+
+    background:
+        #252d39;
+}
+
+
+.amount-box > span {
+    display:
+        block;
+
+    color:
+        #8291a6;
+
+    font-size:
+        9px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        1px;
+
+    margin-bottom:
+        8px;
+}
+
+
+.amount-box > div {
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+}
+
+
+.amount-box input {
+    width:
+        130px;
+
+    border:
+        1px solid #4a5870;
+
+    border-radius:
+        8px;
+
+    padding:
+        10px;
+
+    background:
+        #1c2430;
+
+    outline:
+        none;
+
+    color:
+        white;
+
+    font-size:
+        17px;
+
+    font-weight:
+        800;
+}
+
+
+.amount-box strong {
+    color:
+        #7be8bd;
+
+    font-size:
+        12px;
+}
+
+
+/* =====================================================
+   RESUMEN FINAL
+===================================================== */
+
+.recharge-final-summary {
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        10px;
+
+    margin-top:
+        14px;
+}
+
+
+.recharge-final-summary > div {
+    padding:
+        13px;
+
+    border:
+        1px solid #3d485b;
+
+    border-radius:
+        10px;
+
+    background:
+        #252d39;
+}
+
+
+.recharge-final-summary span {
+    display:
+        block;
+
+    color:
+        #7c8a9e;
+
+    font-size:
+        9px;
+
+    margin-bottom:
+        5px;
+}
+
+
+.recharge-final-summary strong {
+    font-size:
+        11px;
+
+    color:
+        #edf1f5;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .recharge-steps {
+        overflow-x:
+            auto;
+
+        justify-content:
+            flex-start;
+    }
+
+
+    .recharge-step {
+        padding:
+            9px 12px;
+
+        font-size:
+            10px;
+    }
+
+
+    .recharge-arrow {
+        font-size:
+            18px;
+    }
+
+
+    .payment-methods {
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap:
+            7px;
+    }
+
+
+    .payment-method {
+        min-height:
+            68px;
+    }
+
+
+    .payment-method strong {
+        font-size:
+            10px;
+    }
+
+
+    .payment-data-panel {
+        padding:
+            22px 12px;
+    }
+
+
+    .qr-container {
+        width:
+            240px;
+    }
+
+
+    .recharge-final-summary {
+        grid-template-columns:
+            1fr;
+    }
+
+}

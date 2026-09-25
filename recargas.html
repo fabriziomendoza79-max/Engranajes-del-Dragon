@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+>
+
+<title>Engranajes del Dragón | Recargas</title>
+
+<link
+    rel="stylesheet"
+    href="css/style.css"
+>
+
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    media="print"
+    onload="this.media='all'"
+>
+<noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</noscript>
+
+<style>
+body { background: #020a10 url("fondo2.jpg") center / cover no-repeat fixed; color: #e0e0e0; }
+.topbar { background: #040d14 !important; border-bottom: 1px solid #0a2a3a !important; }
+.brand b { background: linear-gradient(135deg, #00b4d8, #00d9ff) !important; }
+.userbar .credit-badge { color: #4ade80; font-weight: 700; }
+.recharge-panel { background: linear-gradient(145deg, #0a1a24, #061218); border: 1px solid #0a2a3a; border-radius: 16px; padding: 24px; }
+.payment-option.selected { border-color: #00d9ff !important; background: rgba(0, 217, 255, 0.15) !important; }
+.payment-option:hover { border-color: #00d9ff; background: rgba(0, 217, 255, 0.1); }
+.recharge-summary { display: flex; gap: 16px; margin-bottom: 16px; padding: 14px; border-radius: 12px; background: rgba(0, 217, 255, 0.06); border: 1px solid rgba(0, 217, 255, 0.12); }
+.recharge-summary div { flex: 1; }
+.recharge-summary span { display: block; font-size: 11px; color: #7d8b96; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.recharge-summary strong { color: #ffffff; font-size: 15px; }
+.recharge-submit { width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; font-size: 15px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); margin-bottom: 12px; }
+.recharge-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(16, 185, 129, 0.4); }
+.recharge-note { text-align: center; font-size: 12px; color: #5a7080; }
+.eyebrow { color: #00d9ff !important; }
+h2 { color: #ffffff !important; }
+.panel { margin-bottom: 20px; }
+.section-head h2 { color: #ffffff; }
+.muted { color: #7d8b96; }
+
+/* TOAST */
+.sv-toast-wrap { position: fixed; top: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; }
+.sv-toast { min-width: 280px; max-width: 380px; padding: 14px 18px; border-radius: 14px; color: #fff; font-size: 14px; font-weight: 600; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.45); animation: svToastIn 0.35s ease, svToastOut 0.35s ease 3.6s forwards; backdrop-filter: blur(10px); }
+.sv-toast.success { background: linear-gradient(135deg, rgba(16,185,129,0.95), rgba(5,150,105,0.95)); border: 1px solid rgba(74,222,128,0.4); }
+.sv-toast.error { background: linear-gradient(135deg, rgba(220,38,38,0.95), rgba(153,27,27,0.95)); border: 1px solid rgba(248,113,113,0.4); }
+.sv-toast.info { background: linear-gradient(135deg, rgba(0,180,216,0.95), rgba(0,140,180,0.95)); border: 1px solid rgba(0,217,255,0.4); }
+.sv-toast .sv-toast-icon { font-size: 20px; line-height: 1; }
+.sv-toast .sv-toast-body { flex: 1; }
+.sv-toast .sv-toast-title { font-weight: 800; margin-bottom: 2px; }
+.sv-toast .sv-toast-msg { font-weight: 400; opacity: 0.95; font-size: 13px; line-height: 1.4; }
+.sv-toast .sv-toast-close { background: none; border: none; color: #fff; cursor: pointer; font-size: 16px; opacity: 0.7; padding: 0; }
+.sv-toast .sv-toast-close:hover { opacity: 1; }
+@keyframes svToastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes svToastOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+
+/* MÓVIL — sin tocar el diseño de escritorio */
+@media (max-width: 700px) {
+  .recharge-panel { padding: 18px 16px; }
+  .recharge-summary { flex-direction: column; gap: 12px; }
+  .recharge-summary div { flex: none; }
+  .payment-option { padding: 16px 10px !important; font-size: 14px !important; }
+  #binanceQR img { max-width: 100% !important; height: auto !important; object-fit: contain; }
+  #binanceQR > div { flex-wrap: wrap; }
+  .sv-toast-wrap { left: 12px; right: 12px; top: 12px; }
+  .sv-toast { min-width: 0; max-width: none; width: 100%; }
+}
+</style>
+
+</head>
+
+
+<body>
+
+
+<header class="topbar">
+
+    <a
+        class="brand"
+        href="index.html"
+    >
+
+        <b>S</b>
+
+        Engranajes del Dragón
+
+    </a>
+
+
+    <div class="userbar">
+
+        <span style="color:#7d8b96;font-size:13px;">
+            Créditos:
+        </span>
+
+        <strong
+            id="saldoHeader"
+            class="credit-badge"
+            style="color:#4ade80;font-size:13px;"
+        >
+            0.00 créditos
+        </strong>
+
+
+        <a
+            class="btn btn-ghost btn-sm"
+            href="index.html"
+        >
+            Volver
+        </a>
+
+        <button
+            type="button"
+            class="btn btn-ghost btn-sm"
+            id="recargasLogout"
+        >
+            Salir
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<main class="container section">
+
+
+    <!-- CABECERA -->
+
+    <div class="recharge-hero">
+
+        <div>
+
+            <span class="eyebrow">
+                SISTEMA DE RECARGAS
+            </span>
+
+            <h1>
+                Recarga tus créditos
+            </h1>
+
+            <p>
+                Agrega créditos a tu cuenta para comprar
+                tus servicios de streaming.
+            </p>
+
+        </div>
+
+
+        <div class="credit-card">
+
+            <span>
+                CRÉDITOS DISPONIBLES
+            </span>
+
+            <strong id="saldo">
+                0.00 créditos
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- RECARGA -->
+
+    <div class="panel recharge-panel">
+
+        <span class="eyebrow">
+            RECARGAR SALDO
+        </span>
+
+        <h2>
+            Ingresa el monto
+        </h2>
+
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+            <input
+                type="number"
+                id="montoInput"
+                min="1"
+                placeholder="Monto en créditos"
+                style="flex:1;padding:12px 14px;border-radius:10px;border:1px solid #0a2a3a;background:#020a10;color:#ffffff;font-size:14px;outline:none;"
+            >
+            <button
+                class="btn btn-primary"
+                onclick="confirmarMonto()"
+                style="padding:12px 20px;border-radius:10px;border:none;background:linear-gradient(135deg,#00b4d8,#00d9ff);color:#020a10;font-size:14px;font-weight:800;cursor:pointer;"
+            >
+                <i class="fa-solid fa-check"></i> Aceptar
+            </button>
+        </div>
+
+
+        <!-- CONVERSOR -->
+        <div id="montoCreditosBox" style="display:none;margin:-8px 0 20px;padding:16px;border-radius:12px;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.25);text-align:center;">
+            <div style="font-size:13px;color:#b0c0c8;margin-bottom:6px;">Recibirás en tu saldo aproximadamente:</div>
+            <div id="montoCreditosTxt" style="font-size:20px;font-weight:900;color:#4ade80;"></div>
+            <div id="montoRevisionTxt" style="display:none;margin-top:8px;font-size:12.5px;font-weight:700;color:#fbbf24;">⚠️ Menos de US$ 3.00: esta recarga quedará <b>en revisión</b> hasta que el administrador la confirme.</div>
+            <div style="font-size:12px;color:#7d8b96;margin-top:8px;">Tipo de cambio plataforma: 1 USD = S/ 3.36</div>
+        </div>
+
+
+        <!-- REGLAS DE RECARGA -->
+        <div style="display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;align-items:center;margin-bottom:20px;padding:14px 16px;border-radius:12px;background:rgba(0,217,255,0.06);border:1px solid rgba(0,217,255,0.18);font-size:13px;color:#b0c0c8;text-align:center;">
+            <span>💵 Recarga mínima: <b style="color:#00d9ff;">US$ 3.00</b></span>
+            <span>🔁 1 USD = <b style="color:#4ade80;">3.36 créditos</b></span>
+            <span>⚠️ Menos de US$ 3.00 queda <b style="color:#fbbf24;">en revisión</b></span>
+        </div>
+
+
+        <span class="eyebrow">
+            MÉTODO DE PAGO
+        </span>
+
+        <h2>
+            Escoge cómo pagar
+        </h2>
+
+        <div style="display:flex;gap:12px;margin-bottom:20px;">
+            <button
+                class="payment-option"
+                onclick="seleccionarMetodo('Yape',this)"
+                style="flex:1;padding:20px;border-radius:12px;border:2px solid #0a2a3a;background:rgba(0,217,255,0.06);color:#ffffff;font-size:16px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;transition:all 0.2s;"
+            >
+                <img src="yape.jpg" alt="Yape" width="40" height="40" decoding="async" style="width:40px;height:40px;border-radius:10px;">
+                Yape
+                <span style="font-size:12px;color:#7d8b96;font-weight:400;">Pago móvil</span>
+            </button>
+
+            <button
+                class="payment-option"
+                onclick="seleccionarMetodo('Binance',this)"
+                style="flex:1;padding:20px;border-radius:12px;border:2px solid #0a2a3a;background:rgba(0,217,255,0.06);color:#ffffff;font-size:16px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;transition:all 0.2s;"
+            >
+                <img src="binance.jpg" alt="Binance" width="40" height="40" decoding="async" style="width:40px;height:40px;border-radius:10px;">
+                Binance
+                <span style="font-size:12px;color:#7d8b96;font-weight:400;">Crypto</span>
+            </button>
+        </div>
+
+        <!-- YAPE NO DISPONIBLE -->
+        <div id="yapeNotice" style="display:none;margin:-8px 0 20px;padding:14px 16px;border-radius:12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.35);color:#fbbf24;font-size:13px;font-weight:700;text-align:center;">
+            <i class="fa-solid fa-triangle-exclamation"></i> Yape por el momento no funciona. Selecciona Binance para recargar.
+        </div>
+
+        <div id="binanceQR" style="display:none;text-align:center;padding:20px;margin-bottom:20px;border-radius:12px;background:rgba(0,217,255,0.06);border:1px solid rgba(0,217,255,0.12);">
+            <p style="color:#ffffff;font-weight:700;margin-bottom:12px;font-size:14px;">Escanea el QR para pagar con Binance</p>
+            <img src="qr-binance.jpg" alt="QR Binance" loading="lazy" decoding="async" width="250" height="250" style="width:250px;height:250px;border-radius:12px;border:2px solid #0a2a3a;margin-bottom:12px;">
+            <p style="color:#7d8b96;font-size:12px;margin-bottom:16px;">Envía el monto exacto en USDT (BEP20) · Mínimo <b style="color:#00d9ff;">US$ 3.00</b> · 1 USD = <b style="color:#4ade80;">3.36 créditos</b></p>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <label style="font-size:12px;color:#fbbf24;font-weight:700;white-space:nowrap;">ID de orden *</label>
+                <input type="text" id="binanceOrderId" placeholder="Ej: 455319679489851393" style="flex:1;padding:10px 12px;border-radius:8px;border:1px solid #0a2a3a;background:#020a10;color:#ffffff;font-size:13px;outline:none;font-family:monospace;">
+                <button onclick="copyOrderId()" style="padding:10px 12px;border-radius:8px;border:1px solid #0a2a3a;background:rgba(0,217,255,0.1);color:#00d9ff;font-size:14px;cursor:pointer;"><i class="fa-solid fa-copy"></i></button>
+            </div>
+        </div>
+
+        <!-- CAPTURA DE PAGO -->
+        <div id="uploadSection" style="display:none;margin-bottom:20px;">
+            <label style="display:block;font-size:12px;font-weight:700;color:#fbbf24;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Captura de comprobante *</label>
+            <label for="capturaPago" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:24px;border-radius:12px;border:2px dashed #0a2a3a;background:rgba(0,217,255,0.04);cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#00d9ff'" onmouseout="this.style.borderColor='#0a2a3a'">
+                <i class="fa-solid fa-cloud-arrow-up" style="font-size:28px;color:#00d9ff;"></i>
+                <span style="color:#ffffff;font-size:13px;font-weight:700;">Subir captura</span>
+                <span style="color:#5a7080;font-size:11px;">PNG, JPG hasta 5MB</span>
+            </label>
+            <input type="file" id="capturaPago" accept="image/*" style="display:none;" onchange="previewCaptura(this)">
+            <div id="capturaPreview" style="display:none;margin-top:10px;text-align:center;">
+                <img id="capturaImg" style="max-width:100%;max-height:200px;border-radius:10px;border:2px solid #0a2a3a;">
+            </div>
+        </div>
+
+
+        <!-- RESUMEN -->
+        <div class="recharge-summary">
+            <div>
+                <span>Monto</span>
+                <strong id="montoElegido">0 créditos</strong>
+            </div>
+            <div>
+                <span>Método</span>
+                <strong id="metodoElegido">No seleccionado</strong>
+            </div>
+            <div>
+                <span>Teléfono (WhatsApp)</span>
+                <input type="tel" id="telefonoInput" placeholder="51987654321" style="width:100%;padding:10px;border-radius:8px;border:1px solid #0a2a3a;background:#020a10;color:#ffffff;font-size:13px;margin-top:4px;box-sizing:border-box;">
+                <small style="color:#5a7080;font-size:11px;">Con código de país, ej: 51987654321</small>
+            </div>
+        </div>
+
+        <button
+            class="btn btn-primary full recharge-submit"
+            onclick="solicitarRecarga()"
+        >
+            <i class="fa-solid fa-paper-plane"></i> Solicitar recarga
+        </button>
+
+        <p class="recharge-note">
+            La recarga quedará pendiente hasta que el administrador confirme el pago.
+        </p>
+
+    </div>
+
+
+
+    <!-- HISTORIAL -->
+
+    <div class="panel">
+
+        <div class="section-head">
+
+            <div>
+
+                <span class="eyebrow">
+                    MOVIMIENTOS
+                </span>
+
+                <h2>
+                    Mis recargas
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div id="historialRecargas"></div>
+
+    </div>
+
+</main>
+
+
+
+<footer class="footer">
+
+    © 2026 Engranajes del Dragón · Tienda virtual
+
+</footer>
+
+
+
+<script src="js/app.js"></script>
+
+
+<script>
+
+SV.requireClient();
+
+
+/* =========================================================
+   BOTÓN SALIR
+========================================================= */
+
+document
+    .getElementById("recargasLogout")
+    .onclick = function () {
+
+        SV.logout();
+        location.href = "index.html";
+
+    };
+
+
+let montoSeleccionado = 0;
+let metodoSeleccionado = "";
+let monedaSeleccionada = "PEN";
+
+
+function placeholderMonto() {
+    const input = document.getElementById("montoInput");
+    if (input) input.placeholder = monedaSeleccionada === "USD" ? "Monto en dólares (USD)" : "Monto en créditos";
+}
+
+
+function montoTxt(v, cur) {
+    if (cur === "USD") return "US$ " + Number(v || 0).toFixed(2) + " (" + SV.creditosDe("USD", v).toFixed(2) + " créditos)";
+    return Number(v || 0).toFixed(2) + " créditos";
+}
+
+
+/* CONVERSOR EN VIVO: monto digitado -> créditos */
+function actualizarConversion() {
+    const box = document.getElementById("montoCreditosBox");
+    const txt = document.getElementById("montoCreditosTxt");
+    const input = document.getElementById("montoInput");
+    if (!box || !txt || !input) return;
+    const val = Number(input.value);
+    if (!val || val <= 0) {
+        box.style.display = "none";
+        return;
+    }
+    box.style.display = "block";
+    const creditos = monedaSeleccionada === "USD" ? val * SV.RATES.USD : val;
+    const usd = creditos / SV.RATES.USD;
+    txt.textContent = creditos.toFixed(2) + " créditos  (≈ $ " + usd.toFixed(2) + " USD)";
+    const aviso = document.getElementById("montoRevisionTxt");
+    if (aviso) aviso.style.display = usd < 3 ? "block" : "none";
+}
+
+document.getElementById("montoInput").oninput = actualizarConversion;
+
+
+
+function svToast(type, title, msg) {
+    let wrap = document.querySelector(".sv-toast-wrap");
+    if (!wrap) {
+        wrap = document.createElement("div");
+        wrap.className = "sv-toast-wrap";
+        document.body.appendChild(wrap);
+    }
+    const icons = { success: "✅", error: "❌", info: "ℹ️" };
+    const t = document.createElement("div");
+    t.className = "sv-toast " + type;
+    t.innerHTML =
+        '<span class="sv-toast-icon">' + (icons[type] || "ℹ️") + '</span>' +
+        '<div class="sv-toast-body">' +
+            '<div class="sv-toast-title">' + title + '</div>' +
+            '<div class="sv-toast-msg">' + msg + '</div>' +
+        '</div>' +
+        '<button class="sv-toast-close" onclick="this.parentElement.remove()">&times;</button>';
+    wrap.appendChild(t);
+    setTimeout(function () { if (t.parentElement) t.remove(); }, 4000);
+}
+
+
+function confirmarMonto() {
+    const input = document.getElementById("montoInput");
+    const val = Number(input.value);
+    if (!val || val <= 0) {
+        svToast("error", "Monto inválido", "Ingresa un monto válido.");
+        return;
+    }
+    const usdEq = monedaSeleccionada === "USD" ? val : val / SV.RATES.USD;
+    montoSeleccionado = val;
+    document.getElementById("montoElegido").textContent = montoTxt(val, monedaSeleccionada);
+    input.disabled = true;
+    if (usdEq < 3) {
+        svToast("info", "Monto en revisión", "Monto listo: " + montoTxt(val, monedaSeleccionada) + ". Como es menor a US$ 3.00 quedará en revisión.");
+    } else {
+        svToast("success", "Monto confirmado", "Monto listo: " + montoTxt(val, monedaSeleccionada) + ".");
+    }
+}
+
+
+function seleccionarMetodo(metodo, boton) {
+    const qr = document.getElementById("binanceQR");
+    const upload = document.getElementById("uploadSection");
+    const notice = document.getElementById("yapeNotice");
+
+    if (metodo === "Yape") {
+        metodoSeleccionado = "";
+        document.querySelectorAll(".payment-option").forEach(btn => {
+            btn.classList.remove("selected");
+            btn.style.borderColor = "#0a2a3a";
+            btn.style.background = "rgba(0,217,255,0.06)";
+            btn.style.opacity = "1";
+        });
+        boton.style.borderColor = "#f59e0b";
+        boton.style.background = "rgba(245,158,11,0.12)";
+        boton.style.opacity = "0.6";
+        document.getElementById("metodoElegido").textContent = "No disponible";
+        qr.style.display = "none";
+        upload.style.display = "none";
+        notice.style.display = "block";
+        svToast("error", "Yape no disponible", "Yape por el momento no funciona. Elige Binance para recargar.");
+        return;
+    }
+
+    metodoSeleccionado = metodo;
+
+    /* Binance se opera en USD, los demás en soles */
+    const nuevaMoneda = metodo === "Binance" ? "USD" : "PEN";
+    if (montoSeleccionado > 0 && nuevaMoneda !== monedaSeleccionada) {
+        montoSeleccionado = nuevaMoneda === "USD"
+            ? Math.round((montoSeleccionado / SV.RATES.USD) * 100) / 100
+            : Math.round((montoSeleccionado * SV.RATES.USD) * 100) / 100;
+        document.getElementById("montoElegido").textContent = montoTxt(montoSeleccionado, nuevaMoneda);
+        const inpMonto = document.getElementById("montoInput");
+        if (inpMonto) inpMonto.value = montoSeleccionado;
+    }
+    if (nuevaMoneda !== monedaSeleccionada) {
+        svToast("info", nuevaMoneda === "USD" ? "Monto en dólares" : "Monto en soles",
+            nuevaMoneda === "USD" ? "Con Binance el monto se ingresa en USD (US$) y se convierte a créditos." : "El monto se ingresa directo en créditos.");
+    }
+    monedaSeleccionada = nuevaMoneda;
+    placeholderMonto();
+    actualizarConversion();
+    document.querySelectorAll(".payment-option").forEach(btn => {
+        btn.classList.remove("selected");
+        btn.style.borderColor = "#0a2a3a";
+        btn.style.background = "rgba(0,217,255,0.06)";
+        btn.style.opacity = "1";
+    });
+    boton.classList.add("selected");
+    boton.style.borderColor = "#00d9ff";
+    boton.style.background = "rgba(0,217,255,0.15)";
+    document.getElementById("metodoElegido").textContent = metodo;
+    notice.style.display = "none";
+
+    if (metodo === "Binance") {
+        qr.style.display = "block";
+        upload.style.display = "block";
+    } else {
+        qr.style.display = "none";
+        upload.style.display = "none";
+    }
+}
+
+function copyOrderId() {
+    const input = document.getElementById("binanceOrderId");
+    const val = input ? input.value.trim() : "";
+    if (!val) {
+        svToast("error", "Sin ID de orden", "No hay ID de orden para copiar.");
+        return;
+    }
+    const done = function () { svToast("success", "Copiado", "ID de orden copiado al portapapeles."); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(val).then(done).catch(function () {
+            input.select();
+            document.execCommand("copy");
+            done();
+        });
+    } else {
+        input.select();
+        document.execCommand("copy");
+        done();
+    }
+}
+
+
+function previewCaptura(input) {
+    if (input.files && input.files[0]) {
+        const label = document.querySelector('label[for="capturaPago"]');
+        if (label) label.style.borderColor = "#22c55e";
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById("capturaImg").src = e.target.result;
+            document.getElementById("capturaPreview").style.display = "block";
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+
+function solicitarRecarga() {
+    if (montoSeleccionado <= 0) {
+        svToast("error", "Monto inválido", "Ingresa un monto válido primero.");
+        return;
+    }
+    if (!metodoSeleccionado) {
+        const yapeNotice = document.getElementById("yapeNotice");
+        if (yapeNotice && yapeNotice.style.display === "block") {
+            svToast("error", "Yape no disponible", "Yape por el momento no funciona. Elige Binance para recargar.");
+        } else {
+            svToast("error", "Método requerido", "Selecciona un método de pago.");
+        }
+        return;
+    }
+
+    const telefono = SV.cleanPhone(document.getElementById("telefonoInput").value);
+    if (telefono.length < 9 || telefono.length > 15) {
+        svToast("error", "Teléfono inválido", "Ingresa tu WhatsApp con código de país (ej: 51987654321).");
+        return;
+    }
+
+    const usuario = SV.session();
+    const orderId = document.getElementById("binanceOrderId") ? document.getElementById("binanceOrderId").value.trim() : "";
+
+    if (metodoSeleccionado === "Binance") {
+        const idInput = document.getElementById("binanceOrderId");
+        if (orderId.length < 6) {
+            svToast("error", "ID de orden obligatorio", "Copia el ID de orden completo de tu pago con Binance.");
+            if (idInput) { idInput.style.borderColor = "#ef4444"; idInput.focus(); }
+            return;
+        }
+        if (idInput) idInput.style.borderColor = "#0a2a3a";
+
+        const captura = document.getElementById("capturaPago");
+        if (!captura || !captura.files || !captura.files.length) {
+            svToast("error", "Captura obligatoria", "Sube la captura del comprobante de pago para continuar.");
+            const label = document.querySelector('label[for="capturaPago"]');
+            if (label) { label.style.borderColor = "#ef4444"; label.scrollIntoView({ behavior: "smooth", block: "center" }); }
+            return;
+        }
+        const label = document.querySelector('label[for="capturaPago"]');
+        if (label) label.style.borderColor = "#0a2a3a";
+    }
+
+    SV.createRecharge(usuario, montoSeleccionado, metodoSeleccionado, orderId, telefono, monedaSeleccionada);
+
+    const montoMsg = montoTxt(montoSeleccionado, monedaSeleccionada);
+    const usdEq = monedaSeleccionado === "USD" ? montoSeleccionado : montoSeleccionado / SV.RATES.USD;
+    const enRevision = usdEq < 3;
+
+    let msg = "💰 Nueva solicitud de recarga" + (enRevision ? " (EN REVISIÓN)" : "") + "\n\n👤 Usuario: " + usuario + "\n💵 Monto: " + montoMsg + "\n📱 Método: " + metodoSeleccionado + "\n📞 Teléfono: " + telefono;
+    if (orderId) {
+        msg += "\n🔑 ID de orden: " + orderId;
+    }
+    if (enRevision) {
+        msg += "\n⚠️ Menor a la recarga mínima de US$ 3.00 → EN REVISIÓN";
+    }
+    msg += "\n📅 Fecha: " + new Date().toLocaleString() + "\n\nPendiente de aprobación - Engranajes del Dragón";
+
+    const adminWa = "5215551877741";
+    window.open("https://wa.me/" + adminWa + "?text=" + encodeURIComponent(msg), "_blank");
+
+    const estadoMsg = enRevision
+        ? "⏳ Solicitud de recarga EN REVISIÓN\n\n👤 Usuario: " + usuario + "\n💵 Monto: " + montoMsg + "\n📱 Método: " + metodoSeleccionado + "\n📅 Fecha: " + new Date().toLocaleString() + "\n\n⚠️ Es menor a la recarga mínima de US$ 3.00, por eso quedó en revisión. El administrador la revisará y te avisará.\n\nEngranajes del Dragón"
+        : "✅ Solicitud de recarga recibida\n\n👤 Usuario: " + usuario + "\n💵 Monto: " + montoMsg + "\n📱 Método: " + metodoSeleccionado + "\n📅 Fecha: " + new Date().toLocaleString() + "\n\n⏳ Tu recarga está pendiente de aprobación. Te avisaremos cuando sea aprobada.\n\nEngranajes del Dragón";
+    const confMsg = estadoMsg;
+    setTimeout(function () {
+        window.open("https://wa.me/" + telefono + "?text=" + encodeURIComponent(confMsg), "_blank");
+    }, 1200);
+
+    if (enRevision) {
+        svToast("info", "Recarga en revisión", "Enviada al administrador. Como es menor a US$ 3.00 quedará en revisión.");
+    } else {
+        svToast("success", "Solicitud enviada", "Se notificó al administrador. Tu recarga está pendiente de aprobación.");
+    }
+
+    montoSeleccionado = 0;
+    metodoSeleccionado = "";
+    monedaSeleccionada = "PEN";
+    placeholderMonto();
+    actualizarConversion();
+
+    document.getElementById("montoInput").value = "";
+    document.getElementById("montoInput").disabled = false;
+
+    document.querySelectorAll(".payment-option").forEach(btn => {
+        btn.classList.remove("selected");
+        btn.style.borderColor = "#0a2a3a";
+        btn.style.background = "rgba(0,217,255,0.06)";
+        btn.style.opacity = "1";
+    });
+    document.getElementById("yapeNotice").style.display = "none";
+
+    document.getElementById("binanceQR").style.display = "none";
+    document.getElementById("uploadSection").style.display = "none";
+    document.getElementById("capturaPreview").style.display = "none";
+    document.getElementById("capturaPago").value = "";
+    const capturaLabel = document.querySelector('label[for="capturaPago"]');
+    if (capturaLabel) capturaLabel.style.borderColor = "#0a2a3a";
+    if (document.getElementById("binanceOrderId")) {
+        document.getElementById("binanceOrderId").value = "";
+    }
+
+    document.getElementById("montoElegido").textContent = "0 créditos";
+    document.getElementById("metodoElegido").textContent = "No seleccionado";
+    document.getElementById("telefonoInput").value = "";
+
+    mostrarHistorial();
+}
+
+
+function actualizarSaldo() {
+    const usuario = SV.session();
+    const saldo = SV.getCredits(usuario);
+    const pen = Number(saldo.PEN || 0);
+    const usd = Number(saldo.USD || 0);
+    const mxn = Number(saldo.MXN || 0);
+    const total = pen + SV.creditosDe("USD", usd) + SV.creditosDe("MXN", mxn);
+    const extra = (usd > 0 ? " · USD " + usd.toFixed(2) : "") + (mxn > 0 ? " · MXN " + mxn.toFixed(2) : "");
+    document.getElementById("saldo").textContent = total.toFixed(2) + " créditos";
+    document.getElementById("saldoHeader").textContent = total.toFixed(2) + " créditos" + extra;
+}
+
+
+function mostrarHistorial() {
+
+    const contenedor =
+        document.getElementById(
+            "historialRecargas"
+        );
+
+
+    const usuario =
+        SV.session();
+
+
+    const lista =
+        SV.recharges()
+            .filter(
+                item =>
+                    item.username ===
+                    usuario
+            );
+
+
+    if (!lista.length) {
+
+        contenedor.innerHTML = `
+
+            <p class="muted">
+                Todavía no tienes solicitudes de recarga.
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    contenedor.innerHTML = "";
+
+
+    lista.forEach(item => {
+
+        const estadoClass =
+            item.status === "Aprobado"
+            ? "available"
+            :
+            item.status === "Rechazado"
+            ? "used"
+            :
+            "pending";
+
+
+        const elemento =
+            document.createElement("div");
+
+
+        elemento.className =
+            "recharge-history";
+
+
+        elemento.innerHTML = `
+
+            <div>
+
+                <strong>
+                    ${SV.creditosDe(item.currency || "PEN", Number(item.amount)).toFixed(2)} créditos
+                    ${item.currency === "USD" ? "<span style='font-size:11px;color:#7d8b96;'>(US$ " + Number(item.amount).toFixed(2) + ")</span>" : ""}
+                </strong>
+
+                <span>
+                    ${item.method}
+                    ·
+                    ${new Date(
+                        item.createdAt
+                    ).toLocaleString()}
+                </span>
+
+            </div>
+
+
+            <span
+                class="status ${estadoClass}"
+            >
+                ${item.needsReview && item.status === "Pendiente" ? "En revisión" : item.status}
+            </span>
+
+        `;
+
+
+        contenedor.appendChild(
+            elemento
+        );
+
+    });
+
+}
+
+
+actualizarSaldo();
+mostrarHistorial();
+placeholderMonto();
+actualizarConversion();
+
+</script>
+
+
+</body>
+</html>
