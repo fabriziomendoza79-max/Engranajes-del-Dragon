@@ -1,22 +1,26 @@
 /* =========================================
-   SINCRONIZACIÓN EN LA NUBE (Firebase Firestore)
+   SINCRONIZACIÓN EN LA NUBE (Supabase)
 
    Los datos se siguen guardando en localStorage
    (rápido y funciona sin internet) y además se
-   copian a la nube, así los usuarios, productos,
+   copian a Supabase, así los usuarios, productos,
    saldos y pedidos sirven en Chrome, Brave, el
    celular o cualquier otro navegador.
 
-   Requiere js/firebase-config.js con los datos
-   de tu proyecto de Firebase. Si no están, el
-   sitio funciona igual que antes (solo local).
+   Requiere js/supabase-config.js con la URL y la
+   clave anónima de tu proyecto de Supabase y la
+   tabla sv_data (ver instrucciones). Si no están,
+   el sitio funciona igual que antes (solo local).
 ========================================= */
 window.SVSYNC = (function () {
-  var COL = "sv_data";
+  var TABLE = "sv_data";
   var TS_KEY = "sv_ts";
   var RELOAD_FLAG = "sv_sync_reloaded";
+  var PAGE = 1000;
+  var TIMEOUT = 12000;
 
-  var db = null;
+  var base = "";
+  var anon = "";
   var enabled = false;
   var ready = false;
   var starting = false;
@@ -53,24 +57,60 @@ window.SVSYNC = (function () {
     try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
   }
 
+  /* ---------- peticiones a Supabase (PostgREST) ---------- */
+  function headers(extra) {
+    var h = {
+      apikey: anon,
+      Authorization: "Bearer " + anon,
+      "Content-Type": "application/json"
+    };
+    if (extra) Object.keys(extra).forEach(function (k) { h[k] = extra[k]; });
+    return h;
+  }
+
+  function api(path, opts) {
+    return fetch(base + path, opts).then(function (res) {
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      if (res.status === 204) return null;
+      return res.text().then(function (txt) {
+        if (!txt) return null;
+        try { return JSON.parse(txt); } catch (e) { return null; }
+      });
+    });
+  }
+
   /* ---------- traer datos de la nube ---------- */
   function pull() {
     if (!enabled) return Promise.resolve(0);
-    return db.collection(COL).get().then(function (snap) {
-      var changed = 0;
-      snap.forEach(function (doc) {
-        var key = doc.id;
-        var d = doc.data() || {};
-        var t = Number(d.t || 0);
-        if (!t || t <= getTs(key)) return;
-        var val;
-        try { val = JSON.parse(d.v); } catch (e) { return; }
-        writeLocal(key, val);
-        setTs(key, t);
-        changed++;
+    var changed = 0;
+    var offset = 0;
+
+    function page() {
+      return api(
+        "/rest/v1/" + TABLE +
+        "?select=id,value,ts&limit=" + PAGE + "&offset=" + offset,
+        { headers: headers() }
+      ).then(function (rows) {
+        rows = rows || [];
+        rows.forEach(function (row) {
+          var id = row.id;
+          var t = Number(row.ts || 0);
+          if (!id || !t || t <= getTs(id)) return;
+          var val;
+          try { val = JSON.parse(row.value); } catch (e) { return; }
+          writeLocal(id, val);
+          setTs(id, t);
+          changed++;
+        });
+        if (rows.length >= PAGE) {
+          offset += PAGE;
+          return page();
+        }
+        return changed;
       });
-      return changed;
-    });
+    }
+
+    return page();
   }
 
   /* ---------- subir cambios a la nube ---------- */
@@ -91,18 +131,19 @@ window.SVSYNC = (function () {
     var keys = Object.keys(queue);
     if (!keys.length) return;
 
-    var batch = db.batch();
-    var sent = {};
-    keys.forEach(function (k) {
+    var body = keys.map(function (k) {
       var item = queue[k];
-      sent[k] = item;
-      batch.set(db.collection(COL).doc(k), { v: item.v, t: item.t });
       delete queue[k];
+      return { id: k, value: item.v, ts: item.t };
     });
 
-    batch.commit().catch(function () {
-      keys.forEach(function (k) {
-        if (!queue[k]) queue[k] = sent[k];
+    api("/rest/v1/" + TABLE, {
+      method: "POST",
+      headers: headers({ Prefer: "resolution=merge-duplicates,return=minimal" }),
+      body: JSON.stringify(body)
+    }).catch(function () {
+      body.forEach(function (row) {
+        if (!queue[row.id]) queue[row.id] = { t: row.ts, v: row.value };
       });
       setTimeout(flush, 5000);
     });
@@ -131,23 +172,17 @@ window.SVSYNC = (function () {
     if (starting) return readyPromise;
     starting = true;
 
-    var cfg = window.SV_FIREBASE_CONFIG;
-    if (!cfg || !cfg.apiKey || !cfg.projectId || typeof firebase === "undefined") {
+    var cfg = window.SV_SUPABASE || {};
+    base = (cfg.url || cfg.SUPABASE_URL || "").replace(/\/$/, "");
+    anon = cfg.key || cfg.SUPABASE_ANON_KEY || "";
+
+    if (!base || !anon || typeof fetch === "undefined") {
       finish();
       return readyPromise;
     }
+    enabled = true;
 
-    try {
-      if (!firebase.apps.length) firebase.initializeApp(cfg);
-      db = firebase.firestore();
-      enabled = true;
-    } catch (e) {
-      enabled = false;
-      finish();
-      return readyPromise;
-    }
-
-    var timeout = new Promise(function (res) { setTimeout(function () { res(-1); }, 12000); });
+    var timeout = new Promise(function (res) { setTimeout(function () { res(-1); }, TIMEOUT); });
 
     Promise.race([pull(), timeout])
       .then(function (changed) {
