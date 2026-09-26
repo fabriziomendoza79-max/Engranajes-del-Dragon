@@ -5,3 +5,8 @@
 # sistema
 Thumbs.db
 .DS_Store
+
+# credenciales de despliegue
+.netlify-token
+netlify-token.txt
+*.zip

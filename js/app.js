@@ -46,10 +46,19 @@ const SV = (function () {
   function set(key, value) {
     try {
       localStorage.setItem(key, JSON.stringify(value));
+      if (window.SVSYNC) SVSYNC.push(key, value);
       return true;
     } catch (e) {
       return false;
     }
+  }
+
+  function ready() {
+    return window.SVSYNC ? SVSYNC.ready() : Promise.resolve(true);
+  }
+
+  function isReady() {
+    return !window.SVSYNC || SVSYNC.isReady();
   }
 
   function uid() {
@@ -280,6 +289,13 @@ const SV = (function () {
 
   // ---------- datos de ejemplo (solo en el PRIMER arranque de un navegador nuevo) ----------
   function seed() {
+    /* no sembrar nada local hasta tener los datos de la nube */
+    if (window.SVSYNC && !SVSYNC.isReady()) {
+      SVSYNC.ready().then(function () {
+        try { seed(); } catch (e) {}
+      });
+      return;
+    }
     const u = users();
     // Instalación nueva = sin usuarios y sin productos. Si ya existen datos,
     // NUNCA se vuelven a crear los productos/proveedores de ejemplo
@@ -1166,6 +1182,8 @@ const SV = (function () {
   // ---------- API pública ----------
   return {
     seed,
+    ready,
+    isReady,
     hash,
     id: uid,
     newCode,
