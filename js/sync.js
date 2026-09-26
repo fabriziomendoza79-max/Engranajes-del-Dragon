@@ -26,6 +26,7 @@ window.SVSYNC = (function () {
   var starting = false;
   var queue = {};
   var timer = null;
+  var remoteRows = -1;
 
   var resolveReady = null;
   var readyPromise = new Promise(function (res) { resolveReady = res; });
@@ -84,6 +85,7 @@ window.SVSYNC = (function () {
     if (!enabled) return Promise.resolve(0);
     var changed = 0;
     var offset = 0;
+    var total = 0;
 
     function page() {
       return api(
@@ -92,6 +94,7 @@ window.SVSYNC = (function () {
         { headers: headers() }
       ).then(function (rows) {
         rows = rows || [];
+        total += rows.length;
         rows.forEach(function (row) {
           var id = row.id;
           var t = Number(row.ts || 0);
@@ -106,11 +109,30 @@ window.SVSYNC = (function () {
           offset += PAGE;
           return page();
         }
+        remoteRows = total;
         return changed;
       });
     }
 
     return page();
+  }
+
+  /* si la nube está vacía, subir todo lo que hay local */
+  function pushAll() {
+    if (!enabled) return;
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (!k || k.indexOf("sv_") !== 0) continue;
+        if (k === "sv_session" || k === TS_KEY) continue;
+        var raw = localStorage.getItem(k);
+        if (raw == null) continue;
+        var t = Date.now();
+        setTs(k, t);
+        queue[k] = { t: t, v: raw };
+      }
+    } catch (e) {}
+    flush();
   }
 
   /* ---------- subir cambios a la nube ---------- */
@@ -186,7 +208,11 @@ window.SVSYNC = (function () {
 
     Promise.race([pull(), timeout])
       .then(function (changed) {
-        if (changed === -1) enabled = false;
+        if (changed === -1) {
+          enabled = false;
+        } else if (remoteRows === 0) {
+          pushAll();
+        }
         finish();
         flush();
         if (changed > 0) afterPull(changed);
