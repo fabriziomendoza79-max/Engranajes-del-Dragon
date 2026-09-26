@@ -163,17 +163,17 @@ const SV = (function () {
   // Página de inicio según el rol del usuario
   function homeFor(u) {
     const name = u || session();
-    if (!name) return "login.html";
+    if (!name) return "index.html";
     const row = users()[name];
-    if (!row) return "login.html";
+    if (!row) return "index.html";
     return (row.role === "admin" || row.role === "dueno" || row.role === "proveedor")
       ? "admin.html"
-      : "index.html";
+      : "tienda.html";
   }
   function requireRole(roles) {
     const u = currentUser();
-    if (!u || !session()) { location.href = "login.html"; return false; }
-    if (u.suspended) { logout(); location.href = "login.html"; return false; }
+    if (!u || !session()) { location.href = "index.html"; return false; }
+    if (u.suspended) { logout(); location.href = "index.html"; return false; }
     if (roles.indexOf(u.role) === -1) { location.replace(homeFor()); return false; }
     return true;
   }
@@ -355,14 +355,14 @@ const SV = (function () {
 
   // ---------- seguridad de rutas ----------
   function requireClient() {
-    if (!session()) { location.href = "login.html"; return; }
-    if (isSuspended(session())) { logout(); location.href = "login.html"; }
+    if (!session()) { location.href = "index.html"; return; }
+    if (isSuspended(session())) { logout(); location.href = "index.html"; }
   }
 
   function requireAdmin() {
     const u = currentUser();
-    if (!u || (u.role !== "admin" && u.role !== "proveedor" && u.role !== "dueno")) { location.href = "login.html"; return; }
-    if (u.suspended) { logout(); location.href = "login.html"; }
+    if (!u || (u.role !== "admin" && u.role !== "proveedor" && u.role !== "dueno")) { location.href = "index.html"; return; }
+    if (u.suspended) { logout(); location.href = "index.html"; }
   }
 
   // ---------- suspensión / baja de usuarios ----------
@@ -485,13 +485,13 @@ const SV = (function () {
       btn.onclick = function() {
         const user = session();
         if (!user || user.trim() === "") {
-          location.href = "login.html";
+          location.href = "index.html";
           return;
         }
         if (isSuspended(user)) {
           alert("Tu cuenta está suspendida. Contacta al administrador.");
           logout();
-          location.href = "login.html";
+          location.href = "index.html";
           return;
         }
         const pid = btn.dataset.buy;
