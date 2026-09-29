@@ -1655,10 +1655,20 @@ document.getElementById("pImageFile").addEventListener("change", function () {
 
     const reader = new FileReader();
     reader.onload = function (e) {
-        selectedImageData = e.target.result;
-        const preview = document.getElementById("imagePreview");
-        preview.src = selectedImageData;
-        preview.style.display = "block";
+        const raw = e.target.result;
+        const apply = function (val) {
+            selectedImageData = val;
+            const preview = document.getElementById("imagePreview");
+            preview.src = selectedImageData;
+            preview.style.display = "block";
+        };
+        if (raw && raw.length > 200000 && window.SV && SV.shrinkDataUrl) {
+            SV.shrinkDataUrl(raw, 1200, 0.82).then(function (small) {
+                apply(small && small.length < raw.length ? small : raw);
+            });
+        } else {
+            apply(raw);
+        }
     };
     reader.readAsDataURL(file);
 });

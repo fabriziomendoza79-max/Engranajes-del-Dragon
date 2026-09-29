@@ -1179,11 +1179,87 @@ const SV = (function () {
     }
   }
 
+  // ---------- imágenes ligeras (para no llenar la memoria del navegador) ----------
+  function shrinkDataUrl(dataUrl, maxSide, quality) {
+    return new Promise(function (resolve) {
+      if (!dataUrl || dataUrl.indexOf("data:image") !== 0 || typeof Image === "undefined") {
+        resolve(null);
+        return;
+      }
+      const img = new Image();
+      img.onload = function () {
+        try {
+          let w = img.naturalWidth || img.width;
+          let h = img.naturalHeight || img.height;
+          if (!w || !h) { resolve(null); return; }
+          const scale = Math.min(1, maxSide / Math.max(w, h));
+          const nw = Math.max(1, Math.round(w * scale));
+          const nh = Math.max(1, Math.round(h * scale));
+          const c = document.createElement("canvas");
+          c.width = nw;
+          c.height = nh;
+          const ctx = c.getContext("2d");
+          ctx.fillStyle = "#fff";
+          ctx.fillRect(0, 0, nw, nh);
+          ctx.drawImage(img, 0, 0, nw, nh);
+          resolve(c.toDataURL("image/jpeg", quality));
+        } catch (e) {
+          resolve(null);
+        }
+      };
+      img.onerror = function () { resolve(null); };
+      img.src = dataUrl;
+    });
+  }
+
+  function shrinkImageList(list) {
+    if (!Array.isArray(list)) return Promise.resolve({ list: list, changed: false });
+    let changed = false;
+    const tasks = list.map(function (item) {
+      if (!item || typeof item !== "object") return Promise.resolve();
+      if (!item.image || item.image.indexOf("data:image") !== 0) return Promise.resolve();
+      if (item.image.length < 200000) return Promise.resolve();
+      return shrinkDataUrl(item.image, 900, 0.72).then(function (small) {
+        if (small && small.length < item.image.length) {
+          item.image = small;
+          changed = true;
+        }
+      });
+    });
+    return Promise.all(tasks).then(function () {
+      return { list: list, changed: changed };
+    });
+  }
+
+  /* aligerar el catálogo local si tiene fotos enormes */
+  function shrinkProducts() {
+    try {
+      const list = products();
+      if (!list || !list.length) return Promise.resolve(false);
+      return shrinkImageList(list).then(function (res) {
+        if (!res.changed) return false;
+        saveProducts(res.list);
+        return true;
+      });
+    } catch (e) {
+      return Promise.resolve(false);
+    }
+  }
+
+  /* aligerar un valor recién bajado de la nube antes de guardarlo */
+  function shrinkValue(key, value) {
+    if (key !== K.products) return Promise.resolve(value);
+    return shrinkImageList(value).then(function (res) { return res.list; });
+  }
+
   // ---------- API pública ----------
   return {
     seed,
     ready,
     isReady,
+    shrinkProducts,
+    shrinkValue,
+    shrinkDataUrl,
     hash,
     id: uid,
     newCode,
