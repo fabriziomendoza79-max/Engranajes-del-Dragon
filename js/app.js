@@ -227,7 +227,7 @@ const SV = (function () {
 
   function createRecharge(username, amount, method, orderId, phone, currency) {
     const list = recharges();
-    const cur = currency || (method === "Binance" ? "USD" : "PEN");
+    const cur = currency || ((method === "Binance" || method === "AstroPay") ? "USD" : "PEN");
     const usdEq = cur === "USD" ? Number(amount || 0) : Number(amount || 0) / RATES.USD;
     const recharge = {
       id: uid(),

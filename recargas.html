@@ -70,8 +70,8 @@ h2 { color: #ffffff !important; }
   .recharge-summary { flex-direction: column; gap: 12px; }
   .recharge-summary div { flex: none; }
   .payment-option { padding: 16px 10px !important; font-size: 14px !important; }
-  #binanceQR img { max-width: 100% !important; height: auto !important; object-fit: contain; }
-  #binanceQR > div { flex-wrap: wrap; }
+  #binanceQR img, #astroQR img { max-width: 100% !important; height: auto !important; object-fit: contain; }
+  #binanceQR > div, #astroQR > div { flex-wrap: wrap; }
   .sv-toast-wrap { left: 12px; right: 12px; top: 12px; }
   .sv-toast { min-width: 0; max-width: none; width: 100%; }
 }
@@ -242,6 +242,16 @@ h2 { color: #ffffff !important; }
 
             <button
                 class="payment-option"
+                onclick="seleccionarMetodo('AstroPay',this)"
+                style="flex:1;padding:20px;border-radius:12px;border:2px solid #0a2a3a;background:rgba(0,217,255,0.06);color:#ffffff;font-size:16px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;transition:all 0.2s;"
+            >
+                <img src="logoastropay.jpg" alt="AstroPay" width="40" height="40" decoding="async" style="width:40px;height:40px;border-radius:10px;">
+                AstroPay
+                <span style="font-size:12px;color:#7d8b96;font-weight:400;">Billetera</span>
+            </button>
+
+            <button
+                class="payment-option"
                 onclick="seleccionarMetodo('Binance',this)"
                 style="flex:1;padding:20px;border-radius:12px;border:2px solid #0a2a3a;background:rgba(0,217,255,0.06);color:#ffffff;font-size:16px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;transition:all 0.2s;"
             >
@@ -253,7 +263,7 @@ h2 { color: #ffffff !important; }
 
         <!-- YAPE NO DISPONIBLE -->
         <div id="yapeNotice" style="display:none;margin:-8px 0 20px;padding:14px 16px;border-radius:12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.35);color:#fbbf24;font-size:13px;font-weight:700;text-align:center;">
-            <i class="fa-solid fa-triangle-exclamation"></i> Yape por el momento no funciona. Selecciona Binance para recargar.
+            <i class="fa-solid fa-triangle-exclamation"></i> Yape por el momento no funciona. Selecciona AstroPay o Binance para recargar.
         </div>
 
         <div id="binanceQR" style="display:none;text-align:center;padding:20px;margin-bottom:20px;border-radius:12px;background:rgba(0,217,255,0.06);border:1px solid rgba(0,217,255,0.12);">
@@ -263,6 +273,17 @@ h2 { color: #ffffff !important; }
             <div style="display:flex;gap:8px;align-items:center;">
                 <label style="font-size:12px;color:#fbbf24;font-weight:700;white-space:nowrap;">ID de orden *</label>
                 <input type="text" id="binanceOrderId" placeholder="Ej: 455319679489851393" style="flex:1;padding:10px 12px;border-radius:8px;border:1px solid #0a2a3a;background:#020a10;color:#ffffff;font-size:13px;outline:none;font-family:monospace;">
+                <button onclick="copyOrderId()" style="padding:10px 12px;border-radius:8px;border:1px solid #0a2a3a;background:rgba(0,217,255,0.1);color:#00d9ff;font-size:14px;cursor:pointer;"><i class="fa-solid fa-copy"></i></button>
+            </div>
+        </div>
+
+        <div id="astroQR" style="display:none;text-align:center;padding:20px;margin-bottom:20px;border-radius:12px;background:rgba(0,217,255,0.06);border:1px solid rgba(0,217,255,0.12);">
+            <p style="color:#ffffff;font-weight:700;margin-bottom:12px;font-size:14px;">Escanea el QR para pagar con AstroPay</p>
+            <img src="qr-astropay.jpg" alt="QR AstroPay" loading="lazy" decoding="async" width="250" height="250" style="width:250px;height:250px;border-radius:12px;border:2px solid #0a2a3a;margin-bottom:12px;">
+            <p style="color:#7d8b96;font-size:12px;margin-bottom:16px;">Envía el monto exacto en USD · Mínimo <b style="color:#00d9ff;">US$ 3.00</b> · 1 USD = <b style="color:#4ade80;">3.36 créditos</b></p>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <label style="font-size:12px;color:#fbbf24;font-weight:700;white-space:nowrap;">ID de orden *</label>
+                <input type="text" id="astroOrderId" placeholder="Ej: 455319679489851393" style="flex:1;padding:10px 12px;border-radius:8px;border:1px solid #0a2a3a;background:#020a10;color:#ffffff;font-size:13px;outline:none;font-family:monospace;">
                 <button onclick="copyOrderId()" style="padding:10px 12px;border-radius:8px;border:1px solid #0a2a3a;background:rgba(0,217,255,0.1);color:#00d9ff;font-size:14px;cursor:pointer;"><i class="fa-solid fa-copy"></i></button>
             </div>
         </div>
@@ -457,7 +478,8 @@ function confirmarMonto() {
 
 
 function seleccionarMetodo(metodo, boton) {
-    const qr = document.getElementById("binanceQR");
+    const qrBinance = document.getElementById("binanceQR");
+    const qrAstro = document.getElementById("astroQR");
     const upload = document.getElementById("uploadSection");
     const notice = document.getElementById("yapeNotice");
 
@@ -473,17 +495,19 @@ function seleccionarMetodo(metodo, boton) {
         boton.style.background = "rgba(245,158,11,0.12)";
         boton.style.opacity = "0.6";
         document.getElementById("metodoElegido").textContent = "No disponible";
-        qr.style.display = "none";
+        qrBinance.style.display = "none";
+        qrAstro.style.display = "none";
         upload.style.display = "none";
         notice.style.display = "block";
-        svToast("error", "Yape no disponible", "Yape por el momento no funciona. Elige Binance para recargar.");
+        svToast("error", "Yape no disponible", "Yape por el momento no funciona. Elige AstroPay o Binance para recargar.");
         return;
     }
 
     metodoSeleccionado = metodo;
 
-    /* Binance se opera en USD, los demás en soles */
-    const nuevaMoneda = metodo === "Binance" ? "USD" : "PEN";
+    /* Binance y AstroPay se operan en USD, los demás en soles */
+    const esDolar = metodo === "Binance" || metodo === "AstroPay";
+    const nuevaMoneda = esDolar ? "USD" : "PEN";
     if (montoSeleccionado > 0 && nuevaMoneda !== monedaSeleccionada) {
         montoSeleccionado = nuevaMoneda === "USD"
             ? Math.round((montoSeleccionado / SV.RATES.USD) * 100) / 100
@@ -494,7 +518,7 @@ function seleccionarMetodo(metodo, boton) {
     }
     if (nuevaMoneda !== monedaSeleccionada) {
         svToast("info", nuevaMoneda === "USD" ? "Monto en dólares" : "Monto en soles",
-            nuevaMoneda === "USD" ? "Con Binance el monto se ingresa en USD (US$) y se convierte a créditos." : "El monto se ingresa directo en créditos.");
+            nuevaMoneda === "USD" ? "Con " + metodo + " el monto se ingresa en USD (US$) y se convierte a créditos." : "El monto se ingresa directo en créditos.");
     }
     monedaSeleccionada = nuevaMoneda;
     placeholderMonto();
@@ -511,17 +535,25 @@ function seleccionarMetodo(metodo, boton) {
     document.getElementById("metodoElegido").textContent = metodo;
     notice.style.display = "none";
 
-    if (metodo === "Binance") {
-        qr.style.display = "block";
+    if (esDolar) {
+        qrBinance.style.display = metodo === "Binance" ? "block" : "none";
+        qrAstro.style.display = metodo === "AstroPay" ? "block" : "none";
         upload.style.display = "block";
     } else {
-        qr.style.display = "none";
+        qrBinance.style.display = "none";
+        qrAstro.style.display = "none";
         upload.style.display = "none";
     }
 }
 
+function inputOrderIdActivo() {
+    if (metodoSeleccionado === "Binance") return document.getElementById("binanceOrderId");
+    if (metodoSeleccionado === "AstroPay") return document.getElementById("astroOrderId");
+    return null;
+}
+
 function copyOrderId() {
-    const input = document.getElementById("binanceOrderId");
+    const input = inputOrderIdActivo() || document.getElementById("binanceOrderId");
     const val = input ? input.value.trim() : "";
     if (!val) {
         svToast("error", "Sin ID de orden", "No hay ID de orden para copiar.");
@@ -564,7 +596,7 @@ function solicitarRecarga() {
     if (!metodoSeleccionado) {
         const yapeNotice = document.getElementById("yapeNotice");
         if (yapeNotice && yapeNotice.style.display === "block") {
-            svToast("error", "Yape no disponible", "Yape por el momento no funciona. Elige Binance para recargar.");
+            svToast("error", "Yape no disponible", "Yape por el momento no funciona. Elige AstroPay o Binance para recargar.");
         } else {
             svToast("error", "Método requerido", "Selecciona un método de pago.");
         }
@@ -578,12 +610,12 @@ function solicitarRecarga() {
     }
 
     const usuario = SV.session();
-    const orderId = document.getElementById("binanceOrderId") ? document.getElementById("binanceOrderId").value.trim() : "";
+    const idInput = inputOrderIdActivo();
+    const orderId = idInput ? idInput.value.trim() : "";
 
-    if (metodoSeleccionado === "Binance") {
-        const idInput = document.getElementById("binanceOrderId");
+    if (metodoSeleccionado === "Binance" || metodoSeleccionado === "AstroPay") {
         if (orderId.length < 6) {
-            svToast("error", "ID de orden obligatorio", "Copia el ID de orden completo de tu pago con Binance.");
+            svToast("error", "ID de orden obligatorio", "Copia el ID de orden completo de tu pago con " + metodoSeleccionado + ".");
             if (idInput) { idInput.style.borderColor = "#ef4444"; idInput.focus(); }
             return;
         }
@@ -650,6 +682,7 @@ function solicitarRecarga() {
     document.getElementById("yapeNotice").style.display = "none";
 
     document.getElementById("binanceQR").style.display = "none";
+    document.getElementById("astroQR").style.display = "none";
     document.getElementById("uploadSection").style.display = "none";
     document.getElementById("capturaPreview").style.display = "none";
     document.getElementById("capturaPago").value = "";
@@ -657,6 +690,9 @@ function solicitarRecarga() {
     if (capturaLabel) capturaLabel.style.borderColor = "#0a2a3a";
     if (document.getElementById("binanceOrderId")) {
         document.getElementById("binanceOrderId").value = "";
+    }
+    if (document.getElementById("astroOrderId")) {
+        document.getElementById("astroOrderId").value = "";
     }
 
     document.getElementById("montoElegido").textContent = "0 créditos";
